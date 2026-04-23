@@ -14,9 +14,15 @@
 <body class="bg-slate-50 text-slate-800">
 
     <nav class="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">K</div>
-            <span class="font-bold text-xl tracking-tight text-indigo-600">Kasly</span>
+        <div class="flex items-center gap-3">
+            <button id="menuBtn" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+        <i class="fa-solid fa-bars text-lg"></i>
+    </button>
+
+    <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">K</div>
+        <span class="font-bold text-xl tracking-tight text-indigo-600">Kasly</span>
+    </div>
         </div>
         <div class="flex items-center gap-4">
             <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition">
@@ -27,13 +33,24 @@
             </div>
         </div>
     </nav>
+    <div id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
+    
+    <div class="p-6 font-bold text-indigo-600 text-lg border-b">
+        Menu
+    </div>
+
+    <ul class="p-4 space-y-3">
+        <li class="hover:bg-slate-100 p-3 rounded-lg cursor-pointer">Dashboard</li>
+        <li class="hover:bg-slate-100 p-3 rounded-lg cursor-pointer">Transaksi</li>
+        <li class="hover:bg-slate-100 p-3 rounded-lg cursor-pointer">Laporan</li>
+        <li class="hover:bg-slate-100 p-3 rounded-lg cursor-pointer">Produk</li>
+    </ul>
+</div>
 
     <header class="px-8 py-6 max-w-7xl mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
-        
         <div class="bg-indigo-600 rounded-2xl p-6 md:p-8 text-white shadow-lg shadow-indigo-200 relative overflow-hidden">
             <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full"></div>
-            
             <div class="relative z-10">
                 <h1 class="text-2xl font-bold mb-1">
                     Halo, <span id="userName" class="text-yellow-300">Runn</span>! 👋
@@ -91,4 +108,18 @@
             </div>
 
             <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-                <div class="w-12
+    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+        <i class="fa-solid fa-chart-line text-xl"></i>
+    </div>
+    <h3 class="font-bold text-lg mb-1">Laporan Keuangan</h3>
+    <p class="text-slate-500 text-sm leading-relaxed">
+        Lihat performa bisnismu dengan laporan yang rapi.
+    </p>
+</div>
+            </div> 
+        </div> 
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
