@@ -34,13 +34,18 @@
     </nav>
     <div id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
     
-    <div class="p-6 font-bold text-indigo-600 text-lg border-b">
-        Menu
-    </div>
+    <nav class="p-6 font-bold text-indigo-600 text-lg border-b flex justify-between items-center">
+    Menu
+        <div class="flex items-center gap-3">
+            <button id="menuBtn2" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+        </div>
+    </nav>
 
     <ul class="p-4 space-y-3">
         <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-    <a href="dashboard.html" class="block p-3 w-full h-full">Dashboard</a>
+    <a href="index.html" class="block p-3 w-full h-full">Dashboard</a>
     </li>
     <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
         <a href="transaksi.html" class="block p-3 w-full h-full">Transaksi</a>
@@ -176,5 +181,7 @@
         </div>
     </div>
 </section>
+    <script src="script.js"></script>
+
 </body>
 </html>
