@@ -45,22 +45,22 @@
 
     <ul class="p-4 space-y-3">
         <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-    <a href="index.html" class="block p-3 w-full h-full">Dashboard</a>
+    <a href="index.php" class="block p-3 w-full h-full">Dashboard</a>
     </li>
     <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="transaksi.html" class="block p-3 w-full h-full">Transaksi</a>
+        <a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a>
     </li>
     <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="produk.html" class="block p-3 w-full h-full">Produk</a>
+        <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
     </li>
     <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="utangPiutang.html" class="block p-3 w-full h-full">Utang & Piutang</a>
+        <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
     </li>
     <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="laporan.html" class="block p-3 w-full h-full">Laporan</a>
+        <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
     </li>
     <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="pengaturan.html" class="block p-3 w-full h-full">Pengaturan</a>
+        <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
     </li>
         </ul>
 </div>
@@ -216,7 +216,7 @@
         </div>
     </div>
 </section>
-    <script src="script.js"></script>
+<script src="src/js/script.js"></script>
 
 </body>
 </html>

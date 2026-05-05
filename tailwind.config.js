@@ -1,8 +1,5 @@
 export default {
-  content: [
-    "./*.html",
-    "./node_modules/flowbite/**/*.js"
-  ],
+  content: ["./*.php", "./php/**/*.php", "./src/**/*.js"],
   theme: {
     extend: {},
   },
