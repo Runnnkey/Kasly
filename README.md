@@ -1,9 +1,9 @@
 # Kasly
 
 ## Anggota Kelompok :
-Kamrun Syah Syahidu | F1D02410011
-Nisa Aulia Kirani   | F1D02410131
-Oktora Rizka Arifin | F1D02410145
+* Kamrun Syah Syahidu | F1D02410011
+* Nisa Aulia Kirani   | F1D02410131
+* Oktora Rizka Arifin | F1D02410145
 
 ## Deskripsi
 Kasly adalah aplikasi berbasis web sebagai pencatatan dan memonitoring keuangan dalam UMKM. Kasly juga dapat digunakan untuk manajemen stok barang, mengeloal utang/piutang dan pelaporan laba rugi.
