@@ -1,3 +1,29 @@
+<?php
+include 'koneksi.php';
+
+// Tabel Riwayat Transaksi
+$query = "(SELECT tanggal_transaksi as tgl, 'Penjualan' as tipe, total_harga as nominal, metode_pembayaran as metode, status_bayar as status FROM penjualan) 
+          UNION
+          (SELECT tanggal as tgl, 'Pembelian' as tipe, total_biaya as nominal, 'TUNAI' as metode, 'Selesai' as status FROM pembelian) 
+          ORDER BY tgl DESC";
+
+$result = mysqli_query($conn, $query);
+
+
+// Informasi Kartu (Lunas)
+$query_kas = "SELECT SUM(total_harga) as total_kas FROM penjualan WHERE status_bayar='Lunas' AND metode_pembayaran='Tunai'";
+$res_kas = mysqli_query($conn, $query_kas);
+$data_kas = mysqli_fetch_assoc($res_kas);
+$total_kas = $data_kas['total_kas'] ?? 0; // Jika NULL, set ke 0
+
+// Informasi Kartu (Piutang)
+$query_piutang = "SELECT SUM(sisa_tagihan) as total_piutang, COUNT(id_piutang) as jml_transaksi FROM piutang WHERE status='Belum Lunas'";
+$res_piutang = mysqli_query($conn, $query_piutang);
+$data_piutang = mysqli_fetch_assoc($res_piutang);
+$total_piutang = $data_piutang['total_piutang'] ?? 0;
+$jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,20 +115,24 @@
             <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white opacity-10 rounded-full"></div>
             <div class="relative z-10">
                 <p class="text-indigo-100 text-xs font-bold uppercase tracking-widest mb-1">Total Kas di Tangan</p>
-                <h3 class="text-3xl font-black">Rp 4.580.000</h3>
+                <h3 class="text-3xl font-black">Rp <?= number_format($total_kas, 0, ',', '.') ?></h3>
                 <div class="mt-4 flex items-center gap-2 text-[10px] bg-white/20 w-fit px-2 py-1 rounded-md">
-                    <i class="fa-solid fa-clock-rotate-left"></i> Update: 10 Menit lalu
+                    <i class="fa-solid fa-clock-rotate-left"></i> Real-time Database
                 </div>
             </div>
         </div>
 
         <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between">
             <div class="flex justify-between items-start">
-                <p class="text-slate-500 text-xs font-bold uppercase">Pesanan Pending</p>
-                <span class="bg-amber-100 text-amber-600 text-[10px] px-2 py-1 rounded-full font-bold">5 Transaksi</span>
+                <p class="text-slate-500 text-xs font-bold uppercase">Piutang Aktif</p>
+                <span class="bg-amber-100 text-amber-600 text-[10px] px-2 py-1 rounded-full font-bold">
+                    <?= $jml_piutang ?> Transaksi
+                </span>
             </div>
-            <h3 class="text-2xl font-black text-slate-800 mt-2">Rp 850.000</h3>
-            <p class="text-xs text-slate-400 mt-2 hover:text-indigo-600 cursor-pointer italic underline">Lihat semua draft →</p>
+            <h3 class="text-2xl font-black text-slate-800 mt-2">Rp <?= number_format($total_piutang, 0, ',', '.') ?></h3>
+            <a href="utangPiutang.php" class="text-xs text-slate-400 mt-2 hover:text-indigo-600 cursor-pointer italic underline">
+                Lihat semua piutang →
+            </a>
         </div>
 
         <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex items-center gap-4">
@@ -164,86 +194,46 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
+                    <?php while ($row = mysqli_fetch_assoc($result)) : 
+                        // Logika Warna dan Ikon berdasarkan Tipe
+                        $isPenjualan = ($row['tipe'] == 'Penjualan');
+                        $bgIcon = $isPenjualan ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600';
+                        $icon = $isPenjualan ? 'fa-arrow-down' : 'fa-arrow-up';
+                        $colorNominal = $isPenjualan ? 'text-emerald-600' : 'text-rose-600';
+                        $prefix = $isPenjualan ? '+ ' : '- ';
+                    ?>
                     <tr class="hover:bg-slate-50 transition group">
                         <td class="p-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center">
-                                    <i class="fa-solid fa-arrow-down text-xs"></i>
+                                <div class="w-8 h-8 <?= $bgIcon ?> rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid <?= $icon ?> text-xs"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-bold text-slate-700">Penjualan</p>
-                                    <p class="text-[10px] text-slate-400">14:20 - Hari ini</p>
+                                    <p class="text-xs font-bold text-slate-700"><?= $row['tipe'] ?></p>
+                                    <p class="text-[10px] text-slate-400"><?= date('d M Y', strtotime($row['tgl'])) ?></p>
                                 </div>
                             </div>
                         </td>
                         <td class="p-4">
-                            <p class="text-sm font-medium text-slate-800">3kg Alpukat Mentega Super</p>
-                            <p class="text-[10px] text-slate-400">Nota: #TRX-001</p>
+                            <p class="text-sm font-medium text-slate-800"><?= $isPenjualan ? "Transaksi Penjualan" : "Restok Barang" ?></p>
                         </td>
                         <td class="p-4">
-                            <span class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded-md uppercase">QRIS</span>
+                            <span class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded-md uppercase"><?= $row['metode'] ?></span>
                         </td>
                         <td class="p-4">
-                            <span class="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
-                                <i class="fa-solid fa-circle text-[6px]"></i> Lunas
-                            </span>
+                            <?php if ($row['status'] == 'Lunas' || $row['status'] == 'Selesai') : ?>
+                                <span class="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
+                                    <i class="fa-solid fa-circle text-[6px]"></i> <?= $row['status'] ?>
+                                </span>
+                            <?php else : ?>
+                                <span class="text-[10px] font-bold bg-amber-50 text-amber-600 px-2 py-1 rounded-md">Menunggu Bayar</span>
+                            <?php endif; ?>
                         </td>
                         <td class="p-4 text-right">
-                            <p class="text-sm font-black text-emerald-600">+ Rp 105.000</p>
+                            <p class="text-sm font-black <?= $colorNominal ?>"><?= $prefix ?>Rp <?= number_format($row['nominal'], 0, ',', '.') ?></p>
                         </td>
                     </tr>
-
-                    <tr class="hover:bg-slate-50 transition group">
-                        <td class="p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-rose-100 text-rose-600 rounded-lg flex items-center justify-center">
-                                    <i class="fa-solid fa-arrow-up text-xs"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold text-slate-700">Operasional</p>
-                                    <p class="text-[10px] text-slate-400">09:00 - Hari ini</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <p class="text-sm font-medium text-slate-800">Bensin Kurir (Pengantaran)</p>
-                        </td>
-                        <td class="p-4">
-                            <span class="text-[10px] font-bold bg-amber-50 text-amber-600 px-2 py-1 rounded-md uppercase">Tunai</span>
-                        </td>
-                        <td class="p-4">
-                            <span class="text-[10px] font-bold text-slate-400 flex items-center gap-1">
-                                <i class="fa-solid fa-circle text-[6px]"></i> Selesai
-                            </span>
-                        </td>
-                        <td class="p-4 text-right">
-                            <p class="text-sm font-black text-rose-600">- Rp 20.000</p>
-                        </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50 transition group">
-                        <td class="p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center">
-                                    <i class="fa-solid fa-spinner text-xs animate-spin"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold text-slate-700">Draft</p>
-                                    <p class="text-[10px] text-slate-400">Kemarin</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <p class="text-sm font-medium text-slate-800">Pesanan Catering Ibu Rahma</p>
-                        </td>
-                        <td class="p-4 text-slate-300 italic text-[10px]">Belum Pilih</td>
-                        <td class="p-4">
-                            <span class="text-[10px] font-bold bg-amber-50 text-amber-600 px-2 py-1 rounded-md">Menunggu Bayar</span>
-                        </td>
-                        <td class="p-4 text-right">
-                            <p class="text-sm font-black text-slate-400">Rp 500.000</p>
-                        </td>
-                    </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>

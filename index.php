@@ -1,6 +1,11 @@
 <?php
 include 'koneksi.php';
 
+$query = "SELECT * FROM user WHERE id_user = 1";
+$result = mysqli_query($conn, $query);
+
+$row = mysqli_fetch_assoc($result)
+
 ?>
 
 <!DOCTYPE html>
@@ -77,7 +82,7 @@ include 'koneksi.php';
             <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full"></div>
             <div class="relative z-10">
                 <h1 class="text-2xl font-bold mb-1">
-                    Halo, <span id="userName" class="text-yellow-300">Runn</span>! 👋
+                    Halo, <span id="userName" class="text-yellow-300"><?php echo $row['username'] ?></span>! 👋
                 </h1>
                 <p class="text-indigo-100 text-sm md:text-base">
                     Semangat buat hari ini! Cek ringkasan bisnismu di bawah ini.
