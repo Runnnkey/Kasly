@@ -101,49 +101,62 @@ include 'koneksi.php';
 </header>
 
     <main class="px-8 pb-16 max-w-7xl mx-auto">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-indigo-600"></i> Info Cepat
-        </h2>
+    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <i class="fa-solid fa-layer-group text-indigo-600"></i> Info Cepat
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                    <i class="fa-solid fa-wallet text-xl"></i>
-                </div>
-                <h3 class="font-bold text-lg mb-1">Ringkasan Saldo</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Pantau pemasukan dan pengeluaran harianmu secara otomatis.</p>
+        <div id="saldo" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
+            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                <i class="fa-solid fa-wallet text-xl"></i>
             </div>
+            <h3 class="font-bold text-lg mb-1">Ringkasan Saldo</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Pantau pemasukan dan pengeluaran harianmu secara otomatis.</p>
+        </div>
 
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                    <i class="fa-solid fa-box-open text-xl"></i>
-                </div>
-                <h3 class="font-bold text-lg mb-1">Stok & Produk</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Kelola data barang dan update stok tanpa ribet hitung manual.</p>
+        <div id="produk" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
+            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                <i class="fa-solid fa-box-open text-xl"></i>
             </div>
+            <h3 class="font-bold text-lg mb-1">Stok & Produk</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Kelola data barang dan update stok tanpa ribet hitung manual.</p>
+        </div>
 
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                    <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
-                </div>
-                <h3 class="font-bold text-lg mb-1">Utang & Piutang</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Catat tagihan pelanggan dan dapatkan reminder jatuh tempo.</p>
+        <div id="utangPiutang" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
+            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
             </div>
+            <h3 class="font-bold text-lg mb-1">Utang & Piutang</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Catat tagihan pelanggan dan dapatkan reminder jatuh tempo.</p>
+        </div>
 
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-        <i class="fa-solid fa-chart-line text-xl"></i>
-    </div>
-    <h3 class="font-bold text-lg mb-1">Laporan Keuangan</h3>
-    <p class="text-slate-500 text-sm leading-relaxed">
-        Lihat performa bisnismu dengan laporan yang rapi.
-    </p>
-</div>
-            </div> 
-        </div> 
-    </main>
-
+        <div id="laporanKeuangan" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
+            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                <i class="fa-solid fa-chart-line text-xl"></i>
+            </div>
+            <h3 class="font-bold text-lg mb-1">Laporan Keuangan</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Lihat performa bisnismu dengan laporan yang rapi.</p>
+        </div>
+    </div> 
+</main> 
 <script src="src/js/script.js"></script>
+<script>
+    const menuNavigasi = {
+    'saldo': 'transaksi.php',
+    'produk': 'produk.php',
+    'utangPiutang': 'utangPiutang.php',
+    'laporanKeuangan': 'laporan.php'
+    };
+
+    for (const [id, url] of Object.entries(menuNavigasi)) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('click', () => window.location.href = url);
+        }
+    }
+
+</script>
+
 </body>
 </html>
