@@ -1,17 +1,32 @@
 <?php
+// PASTIKAN TIDAK ADA SPASI ATAU BARIS KOSONG DI ATAS TAG PHP INI
 session_start();
-include 'koneksi.php';
 
-if (!isset($_SESSION['user_id'])) {
+// 1. Logika Proteksi Utama
+// Mengecek apakah user_id ada dalam session. Jika tidak, lempar ke login.
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit(); 
+}
+
+// 2. Koneksi ke Database Kasly
+require_once 'koneksi.php'; 
+
+// 3. Ambil Data User Berdasarkan Session
+$user_id = $_SESSION['user_id'];
+$query   = "SELECT * FROM user WHERE id_user = '$user_id'";
+$result  = mysqli_query($conn, $query);
+
+// Jika karena suatu alasan data user tidak ditemukan di DB (misal dihapus), paksa logout
+if (mysqli_num_rows($result) === 0) {
+    session_destroy();
     header("Location: login.php");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
-$query = "SELECT * FROM user WHERE id_user = '$user_id'";
-$result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 
+// 4. Inisial Nama untuk UI Dashboard
 $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
 ?>
 
