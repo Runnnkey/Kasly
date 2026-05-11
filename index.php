@@ -1,11 +1,18 @@
 <?php
+session_start();
 include 'koneksi.php';
 
-$query = "SELECT * FROM user WHERE id_user = 1";
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM user WHERE id_user = '$user_id'";
 $result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
 
-$row = mysqli_fetch_assoc($result)
-
+$inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +46,7 @@ $row = mysqli_fetch_assoc($result)
                 <i class="fa-regular fa-bell"></i>
             </button>
             <div class="w-10 h-10 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-bold">
-                R
+                <?= $inisial ?>
             </div>
         </div>
     </nav>
@@ -73,6 +80,12 @@ $row = mysqli_fetch_assoc($result)
     <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
         <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
     </li>
+    <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
+        <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Keluar</span>
+        </a>
+    </li>
         </ul>
 </div>
 
@@ -82,7 +95,7 @@ $row = mysqli_fetch_assoc($result)
             <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full"></div>
             <div class="relative z-10">
                 <h1 class="text-2xl font-bold mb-1">
-                    Halo, <span id="userName" class="text-yellow-300"><?php echo $row['username'] ?></span>! 👋
+                    Halo, <span id="userName" class="text-yellow-300"><?php echo $row['nama_lengkap'] ?></span>! 👋
                 </h1>
                 <p class="text-indigo-100 text-sm md:text-base">
                     Semangat buat hari ini! Cek ringkasan bisnismu di bawah ini.
