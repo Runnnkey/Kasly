@@ -88,6 +88,12 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
     <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
         <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
     </li>
+    <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
+        <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Keluar</span>
+        </a>
+    </li>
         </ul>
 </div>
 
