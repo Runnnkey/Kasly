@@ -32,8 +32,16 @@ Pengguna dapat masuk ke sistem sesuai hak aksesnya.
     * Menampilkan data produk.
     * Ringkasan pendapatan harian yang bisa dipantau langsung oleh Owner
 
-## Users / Actors
+## Team, roles/responsibilities of each member
+Kamrun :  Frontend Developer   
+* Membuat tampilan antarmuka website dan mengembangkan halaman user                 
+Oktora : Backend Developer  
+* Mengembangkan sistem backend, serta integrasi database                       
+Nisa  : System Analyst & Frontend Developer 
+* Melakukan analisis kebutuhan sistem serta membantu pengembangan tampilan frontend
 
+
+## Users / Actors
 * Owner 
   Akses penuh sistem, melihat laporan keuangan lengkap, manajemen user, dan analitik bisnis.
 * Admin  
