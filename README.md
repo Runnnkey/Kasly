@@ -1,45 +1,18 @@
 # Kasly
 
-## Anggota Kelompok :
-* Kamrun Syah Syahidu | F1D02410011
-* Nisa Aulia Kirani   | F1D02410131
-* Oktora Rizka Arifin | F1D02410145
-
 ## Deskripsi
-Kasly adalah aplikasi berbasis web sebagai pencatatan dan memonitoring keuangan dalam UMKM. Kasly juga dapat digunakan untuk manajemen stok barang, mengeloal utang/piutang dan pelaporan laba rugi.
-
-## 🚀 Fitur Aplikasi KASLY
-
-* 🔐 Multi-Role Login (Owner, Admin, Kasir)
-Pengguna dapat masuk ke sistem sesuai hak aksesnya.
-    * Owner: Mengelola hak akses dan melihat laporan laba rugi.  
-    * Admin: Melakukan update stok dan menerima barang dari supplier.  
-    * Kasir: Melakukan input transaksi penjualan secara cepat.  
-
-* 📦 Manajemen Inventaris (Stok FIFO)
-    * Fitur untuk memantau ketersediaan stok barang.
-
-* 💳 Point of Sale
-    * Memilih produk, menghitung total otomatis, dan cetak struk
-    * Mendukung pembayaran tunai maupun nontunai (transfer)
-
-* 📝 Manajemen Utang & Piutang
-    * Mencatat transaksi yang belum lunas dengan batas jatuh tempo.
-    * Mencatat kewajiban pembayaran kepada supplier atas pembelian stok
-
-* 📊 Dashboard & Laporan Keuangan
-    * Perhitungan otomatis omzet dikurangi harga beli.
-    * Menampilkan data produk.
-    * Ringkasan pendapatan harian yang bisa dipantau langsung oleh Owner
+Kasly adalah aplikasi berbasis web sebagai pencatatan dan memonitoring keuangan dalam UMKM. Kasly juga dapat digunakan untuk manajemen stok barang, mengeloal utang/
+piutang dan pelaporan laba rugi.
 
 ## Team, roles/responsibilities of each member
-Kamrun :  Frontend Developer   
-* Membuat tampilan antarmuka website dan mengembangkan halaman user                 
-Oktora : Backend Developer  
-* Mengembangkan sistem backend, serta integrasi database                       
-Nisa  : System Analyst & Frontend Developer 
-* Melakukan analisis kebutuhan sistem serta membantu pengembangan tampilan frontend
+* __Kamrun Syah Syahidu__ | __F1D02410011__ | Frontend Developer |   
+Membuat tampilan antarmuka website dan mengembangkan halaman user
 
+* __Nisa Aulia Kirani__   | __F1D02410131__ | System Analyst & Frontend Developer |
+Melakukan analisis kebutuhan sistem serta membantu pengembangan tampilan frontend
+
+* __Oktora Rizka Arifin__ | __F1D02410145__ | Backend Developer |
+Mengembangkan sistem backend, serta integrasi database                       
 
 ## Users / Actors
 * Owner 
@@ -87,7 +60,7 @@ Menu Utama (Sidebar Navigation)
 * Database       : MySQL
 * Build Tool     : Tailwind CLI (`npm run build` / `npm run dev`)
 * Font           : Plus Jakarta Sans (Google Fonts)
-* Package Manager| npm
+* Package Manager: npm
 
 **Dependencies** (package.json):
 * tailwindcss
@@ -110,42 +83,78 @@ Nama Database: kasly
 Environment: Local (XAMPP / Laragon)
 
 Table Specification
-Tabel yang digunakan:
-user → Data akun pengguna dan role
-produk → Master data produk dan stok
-penjualan → Transaksi penjualan
-pembelian → Transaksi pembelian / restok
-piutang → Data piutang pelanggan
+ms_umkm → Data profil UMKM/unit usaha.
+user → Data akun pengguna, role, dan relasi ke UMKM.
+produk → Master data produk, kategori, harga, dan stok.
+stok_masuk → Log pencatatan stok produk yang masuk.
+penjualan → Header transaksi penjualan kepada pelanggan.
+penjualan_detail → Rincian item produk dalam setiap transaksi penjualan.
+pembelian → Transaksi pembelian barang/stok ke supplier.
+supplier → Data vendor atau penyedia barang.
+pelanggan → Data entitas pembeli/customer.
+piutang → Catatan tagihan penjualan yang belum lunas.
+utang → Catatan kewajiban pembayaran kepada supplier.
+pembayaran_utang → Log riwayat pembayaran cicilan utang.
 
 Detail Kolom Utama:
-1. Table user
-id_user (Primary Key)
-id_umkm
-nama_lengkap
-username
-password (hashed)
-role (Owner, Admin, Kasir)
+1. Table ms_umkm
+id_umkm (Primary Key)
+nama_usaha
+bidang_usaha
+alamat
+no_telepon
 
-2. Table produk
+2. Table user
+id_user (Primary Key)
+id_umkm (Foreign Key)
+username
+password
+role (Owner, Admin, Kasir)
+nama_lengkap
+
+3. Table produk
 id_produk (Primary Key)
+id_umkm (Foreign Key)
 nama_produk
 kategori
-sisa_stok
 harga_jual
 harga_beli
+sisa_stok
 
-3. Table penjualan
+4. Table penjualan
+id_penjualan (Primary Key)
+id_user (Foreign Key - Kasir yang bertugas)
 tanggal_transaksi
 total_harga
 metode_pembayaran
 status_bayar
 
-4. Table pembelian
-tanggal
-total_biaya
+5. Table penjualan_detail
+id_detail (Primary Key)
+id_penjualan (Foreign Key)
+id_produk (Foreign Key)
+kuantitas
+subtotal
 
-5. Table piutang
-id_piutang
+6. Table pembelian
+id_pembelian (Primary Key)
+id_supplier (Foreign Key)
+total_biaya
+tanggal
+
+7. Table piutang
+id_piutang (Primary Key)
+id_penjualan (Foreign Key)
+id_pelanggan (Foreign Key)
 sisa_tagihan
+jatuh_tempo
+status
+
+8. Table utang
+id_utang (Primary Key)
+id_pembelian (Foreign Key)
+id_supplier (Foreign Key)
+total_utang
+sisa_utang
 status
 
