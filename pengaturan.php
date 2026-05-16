@@ -70,27 +70,60 @@
     </li>
         </ul>
 </div>
-<section id="pengaturan-page" class="space-y-6">
-    <div class="flex flex-col lg:flex-row gap-8">
+
+<section 
+    id="pengaturan-page"class="space-y-6 px-4 sm:px-6 lg:px-8 pt-8 lg:pt-10">
+    <div class="flex flex-col lg:flex-row gap-8 pt-6 lg:pt-8">
         
         <!-- SIDEBAR MENU KIRI -->
-        <div class="w-full lg:w-72 space-y-2">
-            <button class="w-full text-left px-5 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-sm flex items-center gap-3 shadow-lg shadow-indigo-100 transition-all">
-                <i class="fa-solid fa-user w-5"></i> Profil User
-            </button>
-            <button class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
-                <i class="fa-solid fa-store w-5"></i> Profil UMKM & Struk
-            </button>
-            <button class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
-                <i class="fa-solid fa-users-gear w-5"></i> Manajemen User
-            </button>
-            <button class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
-                <i class="fa-solid fa-sliders w-5"></i> Preferensi Aplikasi
-            </button>
-            <button class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
-                <i class="fa-solid fa-shield w-5"></i> Keamanan & Data
-            </button>
+<div class="w-full lg:w-72 shrink-0">
+
+    <!-- CARD SIDEBAR -->
+    <div class="bg-white border border-slate-200 rounded-3xl p-3 shadow-sm">
+
+        <!-- TITLE -->
+        <div class="px-3 pt-2 pb-4 border-b border-slate-100 mb-3">
+            <h3 class="text-sm font-black text-slate-800">
+                Pengaturan Sistem
+            </h3>
+
+            <p class="text-[11px] text-slate-400 font-medium mt-1">
+                Kelola akun, preferensi aplikasi, dan keamanan data.
+            </p>
         </div>
+
+        <!-- MENU -->
+        <div class="space-y-2">
+
+            <button class="w-full text-left px-5 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-sm flex items-center gap-3 shadow-lg shadow-indigo-100 transition-all">
+                <i class="fa-solid fa-user w-5"></i>
+                Profil User
+            </button>
+
+            <button class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
+                <i class="fa-solid fa-store w-5"></i>
+                Profil UMKM & Struk
+            </button>
+
+            <button class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
+                <i class="fa-solid fa-users-gear w-5"></i>
+                Manajemen User
+            </button>
+
+            <button class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
+                <i class="fa-solid fa-sliders w-5"></i>
+                Preferensi Aplikasi
+            </button>
+
+            <button class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
+                <i class="fa-solid fa-user-shield w-5"></i>
+                Keamanan & Data
+            </button>
+
+        </div>
+
+    </div>
+</div>
 
         <!-- AREA KONTEN UTAMA (KANAN) -->
         <div class="flex-1 space-y-8">
