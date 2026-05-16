@@ -71,6 +71,7 @@
         </ul>
 </div>
 
+
 <section 
     id="pengaturan-page"class="space-y-6 px-4 sm:px-6 lg:px-8 pt-8 lg:pt-10">
     <div class="flex flex-col lg:flex-row gap-8 pt-6 lg:pt-8">
@@ -125,7 +126,7 @@
     </div>
 </div>
 
-        <!-- AREA KONTEN UTAMA (KANAN) -->
+    <!-- AREA KONTEN UTAMA (KANAN) -->
         <div class="flex-1 space-y-8">
             
             <!-- 1. KARTU PROFIL PENGGUNA (YANG BARU) -->
