@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="bg-white w-full max-w-[460px] rounded-[24px] shadow-2xl p-8 md:p-10">
         <div class="text-center mb-10">
-            <h1 class="text-3xl font-bold text-gray-900">Kasly</h1>
+            <h1 class="text-3xl font-bold text-gray-900">Log In</h1>
         </div>
 
         <?php if ($error): ?>
