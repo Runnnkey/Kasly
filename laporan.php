@@ -19,8 +19,7 @@
     </button>
 
     <div class="flex items-center gap-2">
-        <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">K</div>
-        <span class="font-bold text-xl tracking-tight text-indigo-600">Kasly</span>
+        <img src="Assets/LogoBaru.png" alt="Kasly Logo" class="w-12 h-12 object-contain" >
     </div>
         </div>
         <div class="flex items-center gap-4">
