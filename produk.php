@@ -1,11 +1,41 @@
 <?php
-include 'koneksi.php';
+session_start();
 
-$query = "SELECT * FROM produk";
-$result = mysqli_query($conn, $query);
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit(); 
+}
 
+require_once 'koneksi.php'; 
 
+$user_id = $_SESSION['user_id'];
+
+$queryUser  = "SELECT * FROM user WHERE id_user = '$user_id'";
+$resultUser = mysqli_query($conn, $queryUser);
+
+if (mysqli_num_rows($resultUser) === 0) {
+    session_destroy();
+    header("Location: login.php");
+    exit();
+}
+
+$rowUser = mysqli_fetch_assoc($resultUser);
+$inisial = strtoupper(substr($rowUser['nama_lengkap'], 0, 1));
+
+$id_umkm_user = $rowUser['id_umkm'];
+
+$queryProduk = "SELECT * FROM produk WHERE id_umkm = ?";
+$stmtProduk = mysqli_prepare($conn, $queryProduk);
+
+if ($stmtProduk) {
+    mysqli_stmt_bind_param($stmtProduk, "s", $id_umkm_user);
+    mysqli_stmt_execute($stmtProduk);
+    $resultProduk = mysqli_stmt_get_result($stmtProduk);
+} else {
+    $resultProduk = false;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -110,12 +140,18 @@ $result = mysqli_query($conn, $query);
                     </thead>
                     <tbody class="divide-y divide-slate-50">
                         
-                        <?php 
-                        while($row = mysqli_fetch_assoc($result)): 
+                    <?php 
+                    // Ganti $result menjadi $resultProduk agar sinkron dengan query filter UMKM di atas
+                    if ($resultProduk && mysqli_num_rows($resultProduk) > 0):
+                        while($row = mysqli_fetch_assoc($resultProduk)): 
+                            
                             // Logika sederhana untuk Health Bar
                             $stok = $row['sisa_stok'];
                             $max_stok = 100; // Contoh batas max untuk persentase bar
+                            
+                            // Antisipasi jika stok melebihi max_stok agar bar tidak jebol (max 100%)
                             $persen = ($stok / $max_stok) * 100;
+                            if ($persen > 100) $persen = 100; 
                             
                             // Penentuan warna berdasarkan jumlah stok
                             $bar_color = "bg-emerald-500";
@@ -131,7 +167,7 @@ $result = mysqli_query($conn, $query);
                                 $text_color = "text-amber-600";
                                 $status_label = "Menipis";
                             }
-                        ?>
+                    ?>
                         
                         <tr class="hover:bg-slate-50/50 transition-colors group">
                             <td class="p-4">
@@ -140,12 +176,12 @@ $result = mysqli_query($conn, $query);
                                         <?php echo ($row['kategori'] == 'Minuman') ? '🥤' : '🥑'; ?>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-bold text-slate-800"><?php echo $row['nama_produk']; ?></p>
+                                        <p class="text-xs font-bold text-slate-800"><?php echo htmlspecialchars($row['nama_produk']); ?></p>
                                         <span class="text-[9px] text-slate-400 uppercase">ID: <?php echo $row['id_produk']; ?></span>
                                     </div>
                                 </div>
                             </td>
-                            <td class="p-4 text-xs font-medium text-slate-500"><?php echo $row['kategori']; ?></td>
+                            <td class="p-4 text-xs font-medium text-slate-500"><?php echo htmlspecialchars($row['kategori']); ?></td>
                             <td class="p-4">
                                 <div class="flex flex-col gap-1.5 min-w-[120px]">
                                     <div class="flex justify-between items-center text-[10px] font-bold">
@@ -170,7 +206,17 @@ $result = mysqli_query($conn, $query);
                                 </div>
                             </td>
                         </tr>
-                        <?php endwhile; ?>
+                        
+                    <?php 
+                        endwhile; 
+                    else:
+                    ?>
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-xs font-medium text-slate-400 italic bg-slate-50/30">
+                                Belum ada data produk terdaftar untuk unit usaha Anda.
+                            </td>
+                        </tr>
+                    <?php endif; ?>
 
                     </tbody>
                 </table>
