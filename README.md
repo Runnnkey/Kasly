@@ -11,7 +11,7 @@ Membuat tampilan antarmuka website dan mengembangkan halaman user
 * __Nisa Aulia Kirani__   | __F1D02410131__ | System Analyst & Frontend Developer |
 Melakukan analisis kebutuhan sistem serta membantu pengembangan tampilan frontend
 
-* __Oktora Rizka Arifin__ | __F1D02410145__ | Backend Developer |
+* __Oktora Rizka Arifin__ | __F1D02410145__ | Backend Developer & Database |
 Mengembangkan sistem backend, serta integrasi database                       
 
 ## Users / Actors
@@ -56,7 +56,7 @@ Menu Utama (Sidebar Navigation)
 
 * Backend        : PHP Native + MySQLi
 * Frontend       : HTML5, JavaScript Vanilla
-* Styling        : Tailwind CSS v4, Flowbite, Font Awesome 6
+* Styling        : Tailwind CSS v4, Font Awesome 6
 * Database       : MySQL
 * Build Tool     : Tailwind CLI (`npm run build` / `npm run dev`)
 * Font           : Plus Jakarta Sans (Google Fonts)
