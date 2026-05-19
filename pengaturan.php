@@ -237,150 +237,145 @@ if (isset($_POST['btn_update_umkm'])) {
 
     <!-- AREA KONTEN UTAMA (KANAN) -->
         <div class="flex-1 space-y-8">
-            
-        <!-- SIDEBAR MENU KIRI -->
-            <!-- 1. KARTU PROFIL PENGGUNA (YANG BARU) -->
-            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
-                <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
-                    <div>
-                        <h3 class="font-bold text-slate-800">Profil Pengguna</h3>
-                        <p class="text-[11px] text-slate-400 font-medium">Kelola identitas personal, hak akses, dan pantau log aktivitas Anda.</p>
-                    </div>
-                    <span class="text-[10px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-black uppercase tracking-wider">Akun Aktif</span>
-                </div>
-
-                <div class="p-8 space-y-8">
-                    <!-- Foto & Identitas Dasar -->
-    <div id="kontenUser" class="flex flex-col sm:flex-row sm:items-start gap-8 pb-6 border-b border-slate-100">
-
-    <!-- Form Profile -->
-   <form action="" method="POST" class="space-y-8">
-    
-    <div class="flex flex-col sm:flex-row sm:items-start gap-8 pb-6 border-b border-slate-100">
-        <div class="relative w-24 h-24 bg-indigo-100 border border-indigo-200 rounded-full flex items-center justify-center text-indigo-600 font-black text-3xl shadow-inner group cursor-pointer overflow-hidden shrink-0">
-            <span><?php echo $inisial; ?></span>
-            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[10px] font-bold">
-                <i class="fa-solid fa-camera text-sm mb-1"></i>
-                UBAH FOTO
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
-            <div class="space-y-2">
-                <label class="text-xs font-black text-slate-400 uppercase tracking-wider">Nama Lengkap</label>
-                <input type="text" name="nama_lengkap" value="<?php echo htmlspecialchars($rowUser['nama_lengkap']); ?>" required class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none text-base font-semibold text-slate-700">
-            </div>
-
-            <div class="space-y-2">
-                <label class="text-xs font-black text-slate-400 uppercase tracking-wider">Username</label>
-                <input type="text" name="username" value="<?php echo htmlspecialchars($rowUser['username']); ?>" required class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none text-base font-semibold text-slate-700">
-            </div>
-        </div>
-    </div>
-
-    <div class="space-y-3">
-        <h4 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
-            <i class="fa-solid fa-user-lock text-indigo-600"></i> Otoritas & Hak Akses Toko
-        </h4>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="p-4 bg-slate-50/80 border border-slate-200/60 rounded-2xl select-none">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-1">Level Jabatan</p>
-                <div class="text-sm font-bold text-slate-700 flex items-center gap-1.5">
-                    <?php echo $rowUser['role']?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="space-y-3 pt-2">
-        <h4 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
-            <i class="fa-solid fa-clock-rotate-left text-indigo-600"></i> Log Aktivitas & Perangkat
-        </h4>
-        <div class="border border-slate-100 rounded-2xl overflow-hidden divide-y divide-slate-50">
-            <div class="p-3.5 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
-                <div class="flex items-center gap-3">
-                    <div class="text-slate-400"><i class="fa-solid fa-laptop text-base"></i></div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-700">Perangkat Saat Ini</p>
-                        <p class="text-[10px] text-slate-400">Ubuntu Linux • Sesi Aktif</p>
-                    </div>
-                </div>
-                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">Online</span>
-            </div>
-        </div>
-    </div>
-
-        <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses_profil'): ?>
-            <div class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-xs font-semibold">
-                Profil berhasil diperbarui!
-            </div>
-        <?php echo "</div>"; endif; ?>
-
-        <div class="flex justify-end pt-2">
-            <button type="submit" name="btn_update_profil" class="w-full md:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
-            </button>
-        </div>
-
-    </form>
-            
-    <div id="kontenUMKM" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
-        <div class="p-6 border-b border-slate-100 bg-slate-50/50">
-            <h3 class="font-bold text-slate-800">Profil Usaha & Struk</h3>
-        </div>
-        <div class="p-8 space-y-6">
-            <div class="flex items-center gap-6 pb-6 border-b border-slate-100">
-                <div class="w-24 h-24 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:border-indigo-400 hover:text-indigo-600 cursor-pointer transition-all group">
-                    <i class="fa-solid fa-image text-xl mb-1 group-hover:scale-110 transition"></i>
-                    <span class="text-[9px] font-black uppercase">Upload Logo</span>
-                </div>
+  <div id="kontenUser" class="...">
+    <form action="" method="POST">
+        <div class="..."> </div><div id="kontenUser">
+    <div class="flex-1 space-y-8 w-full">
+        
+        <div id="sectionUser" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm w-full">
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                 <div>
-                    <h4 class="font-bold text-slate-800">Logo Usaha</h4>
-                    <p class="text-xs text-slate-400">Muncul di dashboard dan cetak struk.</p>
+                    <h3 class="font-bold text-slate-800">Profil Pengguna</h3>
+                    <p class="text-[11px] text-slate-400 font-medium">Kelola identitas personal, hak akses, dan pantau log aktivitas Anda.</p>
                 </div>
+                <span class="text-[10px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-black uppercase tracking-wider">Akun Aktif</span>
             </div>
 
-            <form action="" method="POST" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="text-xs font-black text-slate-500 uppercase">Nama Toko</label>
-                        <input type="text" name="nama_usaha" value="<?php echo htmlspecialchars($rowUMKM['nama_usaha'])?>" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium">
-                    </div>
+            <div class="p-8">
+                <form action="" method="POST" class="space-y-8 w-full">
                     
-                    <div class="space-y-2">
-                        <label class="text-xs font-black text-slate-500 uppercase">WhatsApp Toko</label>
-                        <input type="text" name="no_telepon" value="<?php echo htmlspecialchars($rowUMKM['no_telepon'])?>" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium">
-                    </div>
-                    
-                    <div class="space-y-2 md:col-span-2">
-                        <label class="text-xs font-black text-slate-500 uppercase">Bidang Usaha</label>
-                        <input type="text" name="bidang_usaha" value="<?php echo htmlspecialchars($rowUMKM['bidang_usaha'])?>" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium">
-                    </div>
-                    
-                    <div class="space-y-2 md:col-span-2">
-                        <label class="text-xs font-black text-slate-500 uppercase">Alamat</label>
-                        <textarea name="alamat" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium" rows="2"><?php echo htmlspecialchars($rowUMKM['alamat'])?></textarea>
-                    </div>
-                </div>
+                    <div id="kontenUser" class="flex flex-col md:flex-row items-center md:items-start gap-8 pb-6 border-b border-slate-100 w-full">
+                        <div class="relative w-24 h-24 bg-indigo-100 border border-indigo-200 rounded-full flex items-center justify-center text-indigo-600 font-black text-3xl shadow-inner group cursor-pointer overflow-hidden shrink-0">
+                            <span><?php echo $inisial; ?></span>
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[10px] font-bold">
+                                <i class="fa-solid fa-camera text-sm mb-1"></i>
+                                UBAH FOTO
+                            </div>
+                        </div>
 
-                <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses_umkm'): ?>
-                    <div class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-xs font-semibold" style="background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0;">
-                        <i class="fa-solid fa-circle-check mr-1"></i> Data profil usaha berhasil diperbarui!
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 w-full">
+                            <div class="space-y-2">
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-wider">Nama Lengkap</label>
+                                <input type="text" name="nama_lengkap" value="<?php echo htmlspecialchars($rowUser['nama_lengkap']); ?>" required class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none text-base font-semibold text-slate-700">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-xs font-black text-slate-400 uppercase tracking-wider">Username</label>
+                                <input type="text" name="username" value="<?php echo htmlspecialchars($rowUser['username']); ?>" required class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none text-base font-semibold text-slate-700">
+                            </div>
+                        </div>
+                    </div> <div class="space-y-3">
+                        <h4 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-user-lock text-indigo-600"></i> Otoritas & Hak Akses Toko
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="p-4 bg-slate-50/80 border border-slate-200/60 rounded-2xl select-none">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-1">Level Jabatan</p>
+                                <div class="text-sm font-bold text-slate-700 flex items-center gap-1.5 uppercase">
+                                    <?php echo htmlspecialchars($rowUser['role']); ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                <?php endif; ?>
 
-                <div class="flex justify-end pt-2">
-                    <button type="submit" name="btn_update_umkm" class="w-full md:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
-                    </button>
-                </div>
-            </form>
+                    <div class="space-y-3 pt-2">
+                        <h4 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left text-indigo-600"></i> Log Aktivitas & Perangkat
+                        </h4>
+                        <div class="border border-slate-100 rounded-2xl overflow-hidden divide-y divide-slate-50 w-full">
+                            <div class="p-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors w-full">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-slate-400"><i class="fa-solid fa-laptop text-base"></i></div>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-700">Perangkat Saat Ini</p>
+                                        <p class="text-[10px] text-slate-400">Ubuntu Linux • Sesi Aktif</p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-md uppercase">Online</span>
+                            </div>
+                        </div>
+                    </div>
 
+                    <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses_profil'): ?>
+                        <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-xs font-semibold">
+                            <i class="fa-solid fa-circle-check mr-1"></i> Profil berhasil diperbarui!
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" name="btn_update_profil" class="w-full md:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
 
-        <!-- 3. PREFERENSI APLIKASI -->
-        <div id="kontenPreferensi" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
+        <div id="kontenUMKM" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm w-full">
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                <h3 class="font-bold text-slate-800">Profil Usaha & Struk</h3>
+            </div>
+            <div class="p-8 space-y-6">
+                <div class="flex items-center gap-6 pb-6 border-b border-slate-100">
+                    <div class="w-24 h-24 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:border-indigo-400 hover:text-indigo-600 cursor-pointer transition-all group">
+                        <i class="fa-solid fa-image text-xl mb-1 group-hover:scale-110 transition"></i>
+                        <span class="text-[9px] font-black uppercase">Upload Logo</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Logo Usaha</h4>
+                        <p class="text-xs text-slate-400">Muncul di dashboard dan cetak struk.</p>
+                    </div>
+                </div>
+
+                <form action="" method="POST" class="space-y-6 w-full">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-black text-slate-500 uppercase">Nama Toko</label>
+                            <input type="text" name="nama_usaha" value="<?php echo htmlspecialchars($rowUMKM['nama_usaha'])?>" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium">
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-xs font-black text-slate-500 uppercase">WhatsApp Toko</label>
+                            <input type="text" name="no_telepon" value="<?php echo htmlspecialchars($rowUMKM['no_telepon'])?>" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium">
+                        </div>
+                        
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="text-xs font-black text-slate-500 uppercase">Bidang Usaha</label>
+                            <input type="text" name="bidang_usaha" value="<?php echo htmlspecialchars($rowUMKM['bidang_usaha'])?>" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium">
+                        </div>
+                        
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="text-xs font-black text-slate-500 uppercase">Alamat</label>
+                            <textarea name="alamat" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium" rows="2"><?php echo htmlspecialchars($rowUMKM['alamat'])?></textarea>
+                        </div>
+                    </div>
+
+                    <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses_umkm'): ?>
+                        <div class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-xs font-semibold">
+                            <i class="fa-solid fa-circle-check mr-1"></i> Data profil usaha berhasil diperbarui!
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" name="btn_update_umkm" class="w-full md:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="kontenPreferensi" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm w-full">
             <div class="p-6 border-b border-slate-100 bg-slate-50/50">
                 <h3 class="font-bold text-slate-800">Preferensi Aplikasi</h3>
             </div>
@@ -404,7 +399,7 @@ if (isset($_POST['btn_update_umkm'])) {
                         <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-all"></div>
                     </div>
                 </div>
-                <div class="flex items-center justify-between md:col-span-2 border-t pt-6 border-slate-50">
+                <div class="flex items-center justify-between md:col-span-2 border-t pt-6 border-slate-100">
                     <div>
                         <p class="font-bold text-slate-700 text-sm">Notifikasi Peringatan Stok</p>
                         <p class="text-xs text-slate-400">Ingatkan jika stok produk di bawah 5.</p>
@@ -415,6 +410,7 @@ if (isset($_POST['btn_update_umkm'])) {
                 </div>
             </div>
         </div>
+
 
     <!-- 4. KEAMANAN DATA -->
     <div id="kontenKeamanan" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
