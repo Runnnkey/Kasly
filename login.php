@@ -2,7 +2,6 @@
 include 'koneksi.php';
 session_start();
 
-// Jika sudah login, langsung arahkan ke dashboard
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit();
@@ -18,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result && mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
-        
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id_user'];
             $_SESSION['username'] = $user['username'];
@@ -45,69 +43,77 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Masuk ke Kasly</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        brand: {
-                            primary: '#6358ff', 
-                            light: '#7c73ff',
-                            dark: '#4f44e6',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-gradient-to-br from-[#6358ff] to-[#8b83ff] min-h-screen flex items-center justify-center p-5 font-sans">
+<body class="bg-gradient-to-br from-[#1E3A8A] via-[#312E81] to-[#4F46E5] min-h-screen flex items-center justify-center p-4">
 
-    <div class="bg-white w-full max-w-[460px] rounded-[24px] shadow-2xl p-8 md:p-10">
-        <div class="text-center mb-10">
-            <h1 class="text-3xl font-bold text-gray-900">Log In</h1>
+    <div class="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden flex">
+
+        <!-- Bagian Kiri -->
+        <div class="hidden lg:flex w-1/2 bg-gradient-to-br from-blue-50 to-indigo-100 items-center justify-center p-12">
+            <div class="text-center">
+                <img src="Assets/LogoBaru.png" alt="Kasly Logo" class="w-72 mx-auto mb-6">
+                
+                <h2 class="text-4xl font-bold text-gray-800 tracking-tight">Kelola UMKM</h2>
+                <p class="text-indigo-600 text-xl font-semibold mt-1">Lebih Mudah dengan Kasly</p>
+            </div>
         </div>
 
-        <?php if ($error): ?>
-            <div class="bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl text-sm mb-6 text-center animate-pulse">
-                <i class="fa-solid fa-circle-exclamation mr-2"></i><?= $error ?>
-            </div>
-        <?php endif; ?>
+        <!-- Bagian Kanan - Form -->
+        <div class="w-full lg:w-1/2 p-10 flex flex-col justify-center bg-white">
+            <div class="max-w-md mx-auto w-full">
+                
+                <div class="lg:hidden text-center mb-8">
+                    <img src="Assets/LogoBaru.png" alt="Kasly Logo" class="w-24 h-24 mx-auto">
+                </div>
 
-        <form method="POST" class="space-y-5">
-            <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">Username</label>
-                <input type="text" name="username" required autofocus
-                       class="w-full px-5 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all placeholder:text-gray-400"
-                       placeholder="Masukkan username Anda">
-            </div>
+                <h1 class="text-3xl font-bold text-center text-gray-900">Selamat Datang Kembali 👋</h1>
+                <p class="text-center text-gray-500 mt-2 mb-10">Masuk ke akun Kasly Anda</p>
 
-            <div class="relative">
-                <label class="block mb-2 text-sm font-medium text-gray-700">Kata Sandi</label>
-                <div class="relative">
-                    <input type="password" name="password" id="password" required
-                           class="w-full px-5 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all placeholder:text-gray-400"
-                           placeholder="Masukkan kata sandi">
-                    <button type="button" onclick="togglePassword()" 
-                            class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-primary transition-colors">
-                        <i class="fa-solid fa-eye text-sm" id="eye-icon"></i>
+                <?php if ($error): ?>
+                    <div class="bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl mb-6 text-center">
+                        <?= $error ?>
+                    </div>
+                <?php endif; ?>
+
+                <form method="POST" class="space-y-6">
+                    <div>
+                        <input type="text" name="username" required autofocus
+                               class="w-full px-6 py-5 rounded-2xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition text-base"
+                               placeholder="Username">
+                    </div>
+
+                    <div class="relative">
+                        <input type="password" name="password" id="password" required
+                               class="w-full px-6 py-5 rounded-2xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition text-base"
+                               placeholder="Kata Sandi">
+                        <button type="button" onclick="togglePassword()" 
+                                class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-600">
+                            <i class="fa-solid fa-eye text-xl" id="eye-icon"></i>
+                        </button>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold py-5 rounded-2xl text-lg transition-all active:scale-[0.97] shadow-lg shadow-indigo-500/30">
+                        MASUK
                     </button>
+                </form>
+
+                <div class="text-center mt-8">
+                    <span class="text-gray-500">Belum punya akun?</span>
+                    <a href="register.php" class="text-indigo-600 font-semibold hover:underline ml-1">Daftar Sekarang</a>
                 </div>
             </div>
-
-            <button type="submit"
-                    class="w-full bg-gradient-to-r from-brand-dark to-brand-primary text-white font-bold py-3.5 rounded-full shadow-lg shadow-brand-primary/20 hover:shadow-brand-primary/30 hover:-translate-y-0.5 transition-all active:scale-[0.98] mt-4 uppercase tracking-wider">
-                MASUK
-            </button>
-        </form>
-
-        <div class="text-center mt-10">
-            <span class="text-gray-500 text-sm">Belum punya akun?</span> 
-            <a href="register.php" class="text-brand-primary font-bold text-sm hover:underline ml-1">Daftar Sekarang</a>
         </div>
     </div>
 
@@ -115,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         function togglePassword() {
             const pwd = document.getElementById('password');
             const icon = document.getElementById('eye-icon');
-            
             if (pwd.type === "password") {
                 pwd.type = "text";
                 icon.classList.replace('fa-eye', 'fa-eye-slash');
