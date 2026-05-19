@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. Validasi Sesi Pengguna
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     header("Location: login.php");
     exit(); 
@@ -11,7 +10,6 @@ require_once 'koneksi.php';
 
 $user_id = $_SESSION['user_id'];
 
-// 2. Mengambil Data User untuk mendapatkan id_umkm
 $query_user = "SELECT id_user, id_umkm, nama_lengkap FROM user WHERE id_user = '$user_id'";
 $result_user = mysqli_query($conn, $query_user);
 
@@ -26,15 +24,12 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
 $id_umkm = $row['id_umkm'];
 
 
-// 3. Mengambil Data Ringkasan Dashboard (Sangat Efektif & Singkat)
 $query_ringkasan = "SELECT 
-                        -- Hitung piutang UMKM ini langsung dari tabel penjualan
                         (SELECT SUM(p.sisa_tagihan) 
                          FROM piutang p
                          INNER JOIN penjualan pj ON p.id_penjualan = pj.id_penjualan
                          WHERE pj.id_umkm = '$id_umkm') AS sisa_piutang_all,
                         
-                        -- Hitung utang UMKM ini langsung dari tabel pembelian
                         (SELECT SUM(ut.sisa_utang) 
                          FROM utang ut
                          INNER JOIN pembelian pb ON ut.id_pembelian = pb.id_pembelian
@@ -52,7 +47,6 @@ $sisa_utang_dashboard   = $ringkasan['sisa_utang_all'] ?? 0;
 $saldo_bersih           = $sisa_piutang_dashboard - $sisa_utang_dashboard;
 
 
-// 4. Mengambil Daftar Piutang Belum Lunas (Saring berdasarkan penjualan.id_umkm)
 $query_tabel = "SELECT 
                     p.id_piutang,
                     pl.nama_pelanggan,
@@ -111,7 +105,7 @@ $query_aktivitas = "
      WHERE pb.id_umkm = '$id_umkm')
     
     ORDER BY tanggal DESC 
-    LIMIT 5"; // Kita batasi hanya menampilkan 5 aktivitas teratas
+    LIMIT 5";
 
 $result_aktivitas = mysqli_query($conn, $query_aktivitas);
 
@@ -119,6 +113,35 @@ if (!$result_aktivitas) {
     die("Query Aktivitas Error: " . mysqli_error($conn));
 }
 
+$query_dropdown_pembelian = "SELECT DISTINCT 
+                                pb.id_pembelian, 
+                                ut.id_supplier, 
+                                pb.tanggal, 
+                                ut.sisa_utang,
+                                ut.jatuh_tempo
+                             FROM pembelian pb
+                             INNER JOIN utang ut ON pb.id_pembelian = ut.id_pembelian
+                             INNER JOIN supplier s ON ut.id_supplier = s.id_supplier
+                             WHERE pb.id_umkm = '$id_umkm' 
+                             AND pb.status_bayar = 'Belum Lunas'
+                             ORDER BY pb.id_pembelian DESC";
+$result_dropdown_pembelian = mysqli_query($conn, $query_dropdown_pembelian);
+
+$query_dropdown_supplier = "SELECT id_supplier, nama_supplier FROM supplier ORDER BY nama_supplier ASC";
+$result_dropdown_supplier = mysqli_query($conn, $query_dropdown_supplier);
+
+$query_dropdown_penjualan = "SELECT DISTINCT 
+                                pj.id_penjualan, 
+                                p.id_pelanggan, 
+                                pj.tanggal_transaksi, 
+                                p.sisa_tagihan 
+                             FROM penjualan pj
+                             INNER JOIN piutang p ON pj.id_penjualan = p.id_penjualan
+                             WHERE pj.id_umkm = '$id_umkm' 
+                             AND pj.status_bayar = 'Belum Lunas'
+                             ORDER BY pj.id_penjualan DESC";
+
+$result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
 ?>
 
 <!DOCTYPE html>
@@ -207,15 +230,6 @@ if (!$result_aktivitas) {
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-3">
-                <button class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 hover:scale-105 transition-all flex items-center gap-2 shadow-lg shadow-indigo-100">
-                    <i class="fa-solid fa-plus text-[10px]"></i> Piutang
-                </button>
-                <button class="bg-slate-800 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-900 hover:scale-105 transition-all flex items-center gap-2 shadow-lg shadow-slate-200">
-                    <i class="fa-solid fa-plus text-[10px]"></i> Utang
-                </button>
-                <div class="h-10 w-px bg-slate-200 mx-1 hidden md:block"></div> 
-            </div>
         </div>
     </div>
 
@@ -410,8 +424,288 @@ if (!$result_aktivitas) {
                 </table>
             </div>
         </div>
+
+        
+
+       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+            <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-slate-800 tracking-tight">Pencatatan Piutang Baru</h3>
+            </div>
+        </div>
+
+        <!-- PENCATATAN PIUTANG -->
+
+        <form action="proses_piutang.php" method="POST" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Nota / ID Penjualan</label>
+                    <select name="id_penjualan" id="id_penjualan" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-700 appearance-none">
+                        <option value="">-- Pilih Nota Jual --</option>
+                        <?php 
+                        if ($result_dropdown_penjualan && mysqli_num_rows($result_dropdown_penjualan) > 0) {
+                            while($penjualan = mysqli_fetch_assoc($result_dropdown_penjualan)) {
+                                ?>
+                                <option value="<?php echo $penjualan['id_penjualan']; ?>" 
+                                        data-pelanggan="<?php echo $penjualan['id_pelanggan']; ?>"
+                                        data-tagihan="<?php echo $penjualan['sisa_tagihan']; ?>">
+                                    Nota #<?php echo $penjualan['id_penjualan']; ?> (Sisa: Rp <?php echo number_format($penjualan['sisa_tagihan'], 0, ',', '.'); ?>)
+                                </option>
+                                <?php 
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Nama Pelanggan</label>
+                    <select name="id_pelanggan" id="id_pelanggan" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-700 appearance-none">
+                        <option value="">-- Pilih Pelanggan --</option>
+                        <?php 
+                        $query_pelanggan = "SELECT id_pelanggan, nama_pelanggan FROM pelanggan ORDER BY nama_pelanggan ASC";
+                        $result_pelanggan = mysqli_query($conn, $query_pelanggan);
+                        while($pelanggan = mysqli_fetch_assoc($result_pelanggan)): 
+                        ?>
+                            <option value="<?php echo $pelanggan['id_pelanggan']; ?>"><?php echo htmlspecialchars($pelanggan['nama_pelanggan']); ?></option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Total Sisa Tagihan (Rp)</label>
+                    <input type="number" name="sisa_tagihan" id="sisa_tagihan" placeholder="0" readonly required 
+                        class="w-full p-3 bg-slate-100 border border-slate-200 rounded-xl outline-none text-sm font-medium text-slate-500 cursor-not-allowed">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Nominal Yang Dibayar (Rp)</label>
+                    <input type="number" name="nominal_bayar" id="nominal_bayar" placeholder="Masukkan jumlah bayar" required 
+                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-800">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Tanggal Jatuh Tempo</label>
+                    <input type="date" name="jatuh_tempo" required 
+                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-600">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Status Tagihan</label>
+                    <select name="status" id="status_tagihan" required 
+                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-700">
+                        <option value="Belum Lunas">Belum Lunas</option>
+                        <option value="Lunas">Lunas</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button type="submit" name="btn_simpan_piutang" class="w-full px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Data Piutang
+                </button>
+            </div>
+        </form>
+    </div>
+
+        <!-- PENCATATAN UTANG -->
+
+    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+            <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-slate-800 tracking-tight">Pencatatan Utang</h3>
+                <p class="text-xs text-slate-400 font-medium">Kurangi kewajiban pembayaran belanja ke supplier melalui cicilan.</p>
+            </div>
+        </div>
+
+        <form action="proses_utang.php" method="POST" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Nota / ID Pembelian</label>
+                    <select name="id_pembelian" id="id_pembelian" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-700 appearance-none">
+                    <option value="">-- Pilih Nota Belanja --</option>
+                    <?php 
+                    if ($result_dropdown_pembelian && mysqli_num_rows($result_dropdown_pembelian) > 0) {
+                        while($pembelian = mysqli_fetch_assoc($result_dropdown_pembelian)) {
+                            ?>
+                            <option value="<?php echo $pembelian['id_pembelian']; ?>" 
+                                    data-supplier="<?php echo $pembelian['id_supplier']; ?>"
+                                    data-utang="<?php echo $pembelian['sisa_utang']; ?>"
+                                    data-tempo="<?php echo $pembelian['jatuh_tempo']; ?>">
+                                Nota #<?php echo $pembelian['id_pembelian']; ?> (Sisa: Rp <?php echo number_format($pembelian['sisa_utang'], 0, ',', '.'); ?>)
+                            </option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Nama Supplier</label>
+                    <select name="id_supplier" id="id_supplier" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-700 appearance-none">
+                        <option value="">-- Pilih Supplier --</option>
+                        <?php 
+                        if ($result_dropdown_supplier && mysqli_num_rows($result_dropdown_supplier) > 0) {
+                            mysqli_data_seek($result_dropdown_supplier, 0);
+                            while($supplier = mysqli_fetch_assoc($result_dropdown_supplier)) {
+                                ?>
+                                <option value="<?php echo trim($supplier['id_supplier']); ?>">
+                                    <?php echo htmlspecialchars($supplier['nama_supplier']); ?>
+                                </option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Total Sisa Utang Lama (Rp)</label>
+                    <input type="number" name="sisa_utang" id="sisa_utang" placeholder="0" readonly required 
+                        class="w-full p-3 bg-slate-100 border border-slate-200 rounded-xl outline-none text-sm font-medium text-slate-500 cursor-not-allowed">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Nominal Yang Dibayar (Rp)</label>
+                    <input type="number" name="nominal_bayar" id="nominal_bayar_utang" placeholder="Masukkan jumlah bayar" required 
+                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-800">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Tanggal Jatuh Tempo</label>
+                    <input type="date" name="jatuh_tempo" id="id_jatuh_tempo_utang" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-600">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase">Status Pembayaran</label>
+                    <select name="status" id="status_utang" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium text-slate-700">
+                        <option value="Belum Lunas">Belum Lunas</option>
+                        <option value="Lunas">Lunas</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button type="submit" name="btn_simpan_utang" class="w-full px-6 py-2.5 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-900 hover:scale-[1.02] transition-all shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Data Utang
+                </button>
+            </div>
+        </form>
+    </div>
+
+    
+</div>
     </section>
 
     <script src="src/js/script.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        // Ganti bagian // 1. LOGIKA FORM UTANG di script Anda dengan ini:
+        const selectPembelian = document.getElementById('id_pembelian');
+        const selectSupplier = document.getElementById('id_supplier');
+        const inputSisaUtang = document.getElementById('sisa_utang');
+        const inputNominalBayarUtang = document.getElementById('nominal_bayar_utang');
+        const statusUtang = document.getElementById('status_utang');
+        const inputJatuhTempoUtang = document.getElementById('id_jatuh_tempo_utang'); // Target input tanggal
+
+        if (selectPembelian && selectSupplier) {
+            selectPembelian.addEventListener('change', function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const idSupplierTerkait = selectedOption.getAttribute('data-supplier');
+                const sisaUtangAktif = selectedOption.getAttribute('data-utang');
+                const jatuhTempoAktif = selectedOption.getAttribute('data-tempo'); // Ambil tanggal dari atribut data-tempo
+
+                if (idSupplierTerkait) {
+                    selectSupplier.value = idSupplierTerkait;
+                    inputSisaUtang.value = sisaUtangAktif;         
+                    inputJatuhTempoUtang.value = jatuhTempoAktif;   // Otomatis isi tanggal jatuh tempo lama ke input date
+                    inputNominalBayarUtang.max = sisaUtangAktif;   
+                    inputNominalBayarUtang.value = "";             
+
+                    selectSupplier.classList.add('bg-slate-100', 'cursor-not-allowed');
+                    selectSupplier.style.pointerEvents = "none"; 
+                } else {
+                    selectSupplier.value = "";
+                    inputSisaUtang.value = "";
+                    inputJatuhTempoUtang.value = "";                // Kosongkan jika default dipilih
+                    inputNominalBayarUtang.value = "";
+                    selectSupplier.classList.remove('bg-slate-100', 'cursor-not-allowed');
+                    selectSupplier.style.pointerEvents = "auto";
+                }
+            });
+
+            if (inputNominalBayarUtang) {
+                inputNominalBayarUtang.addEventListener('input', function() {
+                    const sisa = parseFloat(inputSisaUtang.value) || 0;
+                    const bayar = parseFloat(this.value) || 0;
+
+                    if (bayar >= sisa && sisa > 0) {
+                        statusUtang.value = "Lunas";
+                    } else {
+                        statusUtang.value = "Belum Lunas";
+                    }
+                });
+            }
+        }
+
+        const selectPenjualan = document.getElementById('id_penjualan');
+        const selectPelanggan = document.getElementById('id_pelanggan');
+        const inputSisaTagihan = document.getElementById('sisa_tagihan');
+        const inputNominalBayar = document.getElementById('nominal_bayar');
+        const statusTagihan = document.getElementById('status_tagihan');
+
+        if (selectPenjualan && selectPelanggan) {
+            selectPenjualan.addEventListener('change', function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const idPelangganTerkait = selectedOption.getAttribute('data-pelanggan');
+                const sisaTagihanAktif = selectedOption.getAttribute('data-tagihan');
+
+                if (idPelangganTerkait) {
+                    selectPelanggan.value = idPelangganTerkait;
+                    inputSisaTagihan.value = sisaTagihanAktif; // Otomatis isi angka sisa tagihan asli
+                    inputNominalBayar.max = sisaTagihanAktif;  // Batasi agar tidak bayar melebihi sisa utang
+                    inputNominalBayar.value = "";              // Reset input nominal bayar
+
+                    selectPelanggan.classList.add('bg-slate-100', 'cursor-not-allowed');
+                    selectPelanggan.style.pointerEvents = "none";
+                } else {
+                    selectPelanggan.value = "";
+                    inputSisaTagihan.value = "";
+                    inputNominalBayar.value = "";
+                    selectPelanggan.classList.remove('bg-slate-100', 'cursor-not-allowed');
+                    selectPelanggan.style.pointerEvents = "auto";
+                }
+            });
+
+            // Otomatis ubah status ke 'Lunas' jika nominal bayar sama dengan sisa tagihan
+            if(inputNominalBayar) {
+                inputNominalBayar.addEventListener('input', function() {
+                    const sisa = parseFloat(inputSisaTagihan.value) || 0;
+                    const bayar = parseFloat(this.value) || 0;
+
+                    if (bayar >= sisa && sisa > 0) {
+                        statusTagihan.value = "Lunas";
+                    } else {
+                        statusTagihan.value = "Belum Lunas";
+                    }
+                });
+            }
+        }
+
+    });
+</script>
 </body>
 </html>

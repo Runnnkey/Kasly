@@ -1,53 +1,69 @@
 <?php
 session_start();
 
-// 1. Validasi akses pengguna yang sedang login
+// 1. Validasi Sesi Pengguna
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     header("Location: login.php");
-    exit();
+    exit(); 
 }
 
-require_once 'koneksi.php';
+require_once 'koneksi.php'; 
 
-// Pastikan parameter ID utang dikirimkan dan berupa angka valid
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $id_utang = mysqli_real_escape_string($conn, $_GET['id']);
+// 2. Ambil ID Utang dari URL
+if (isset($_GET['id'])) {
+    $id_utang = intval($_GET['id']);
 
-    // Mulai database transaction untuk menjaga konsistensi data di beberapa tabel
+    // Mulai Database Transaction (Menjamin sinkronisasi kedua tabel aman)
     mysqli_begin_transaction($conn);
 
     try {
-        // A. Ambil detail utang sebelum diubah (untuk mendapatkan nominal sisa_utang & id_pembelian)
-        $query_get_utang = "SELECT id_pembelian, id_supplier, sisa_utang FROM utang WHERE id_utang = '$id_utang'";
-        $res_utang = mysqli_query($conn, $query_get_utang);
-        
-        if ($utang_data = mysqli_fetch_assoc($res_utang)) {
-            $id_pembelian = $utang_data['id_pembelian'];
-            $id_supplier  = $utang_data['id_supplier'];
-            $jumlah_bayar = $utang_data['sisa_utang']; // Bayar lunas seluruh sisa utang
+        // A. Cari id_pembelian terkait dari data utang ini terlebih dahulu
+        $query_get_id = "SELECT id_pembelian FROM utang WHERE id_utang = ?";
+        $stmt_get = mysqli_prepare($conn, $query_get_id);
+        mysqli_stmt_bind_param($stmt_get, "i", $id_utang);
+        mysqli_stmt_execute($stmt_get);
+        $result_get = mysqli_stmt_get_result($stmt_get);
+        $data_utang = mysqli_fetch_assoc($result_get);
+        mysqli_stmt_close($stmt_get);
 
-            if ($jumlah_bayar > 0) {
-                // B. Catat riwayat pembayaran ke dalam tabel pembayaran_utang
-                $query_log = "INSERT INTO pembayaran_utang (id_utang, tanggal_pembayaran, jumlah_bayar, metode_pembayaran, keterangan) 
-                              VALUES ('$id_utang', NOW(), '$jumlah_bayar', 'Tunai', 'Pelunasan Instan via Dashboard')";
-                mysqli_query($conn, $query_log);
-            }
+        if ($data_utang) {
+            $id_pembelian = $data_utang['id_pembelian'];
 
-            // C. Update status utang menjadi Lunas dan kosongkan sisa_utang
-            $query_update_utang = "UPDATE utang SET sisa_utang = 0, status = 'Lunas' WHERE id_utang = '$id_utang'";
-            mysqli_query($conn, $query_update_utang);
+            // B. UPDATE TABEL UTANG: Set sisa_utang menjadi 0 dan status menjadi Lunas
+            $query_update_utang = "UPDATE utang SET sisa_utang = 0, status = 'Lunas' WHERE id_utang = ?";
+            $stmt_u = mysqli_prepare($conn, $query_update_utang);
+            mysqli_stmt_bind_param($stmt_u, "i", $id_utang);
+            mysqli_stmt_execute($stmt_u);
+            mysqli_stmt_close($stmt_u);
+
+            // C. UPDATE TABEL PEMBELIAN: Ubah status_bayar menjadi Lunas (Ini kunci penyaringan dropdown!)
+            // Catatan: Pastikan nama kolom status bayar di tabel pembelian Anda adalah 'status_bayar'
+            $query_update_pembelian = "UPDATE pembelian SET status_bayar = 'Lunas' WHERE id_pembelian = ?";
+            $stmt_pb = mysqli_prepare($conn, $query_update_pembelian);
+            mysqli_stmt_bind_param($stmt_pb, "i", $id_pembelian);
+            mysqli_stmt_execute($stmt_pb);
+            mysqli_stmt_close($stmt_pb);
+
+            // Jika kedua tabel berhasil di-update tanpa error, simpan permanen
+            mysqli_commit($conn);
+            
+            header("Location: utangPiutang.php?status=sukses_lunas_utang");
+            exit();
+        } else {
+            throw new Exception("Data utang tidak ditemukan.");
         }
 
-        // Komit semua transaksi jika tidak ada error
-        mysqli_commit($conn);
-        
     } catch (Exception $e) {
-        // Jika ada query yang gagal, batalkan semua perubahan data
+        // Jika salah satu proses gagal, batalkan semua agar data tidak selisih
         mysqli_rollback($conn);
-        die("Gagal memproses pembayaran utang: " . $e->getMessage());
+        header("Location: utangPiutang.php?status=gagal_proses");
+        exit();
     }
+
+} else {
+    header("Location: utangPiutang.php");
+    exit();
 }
 
-// Kembalikan pengguna ke halaman utama secara instan setelah data ter-update
-header("Location: utangPiutang.php");
-exit();
+mysqli_close($conn);
+?>
