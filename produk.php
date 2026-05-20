@@ -42,7 +42,7 @@ if ($stmtProduk) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kasly</title>
+    <title>Kasly - Inventaris</title>
     <link rel="stylesheet" href="dist/output.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -50,78 +50,121 @@ if ($stmtProduk) {
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50/40">
 
-<nav class="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50">
+    <nav class="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50">
         <div class="flex items-center gap-3">
             <button id="menuBtn" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
-        <i class="fa-solid fa-bars text-lg"></i>
-    </button>
-
-    <div class="flex items-center gap-2">
-        <img src="Assets/LogoBaru.png" alt="Kasly Logo" class="w-12 h-12 object-contain" >
-    </div>
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+            <div class="flex items-center gap-2">
+                <img src="Assets/LogoBaru.png" alt="Kasly Logo" class="w-12 h-12 object-contain" >
+            </div>
         </div>
         <div class="flex items-center gap-4">
             <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition">
                 <i class="fa-regular fa-bell"></i>
             </button>
             <div class="w-10 h-10 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-bold">
-                R
+                <?php echo $inisial; ?>
             </div>
         </div>
     </nav>
+
     <div id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
-    
-   <nav class="p-6 font-bold text-indigo-600 text-lg border-b flex justify-between items-center">
-    Menu
-        <div class="flex items-center gap-3">
-            <button id="menuBtn2" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
-                <i class="fa-solid fa-bars text-lg"></i>
-            </button>
-        </div>
-    </nav>
-
-    <ul class="p-4 space-y-3">
-        <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-    <a href="index.php" class="block p-3 w-full h-full">Dashboard</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
-    </li>
-    <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
-        <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Keluar</span>
-        </a>
-    </li>
+        <nav class="p-6 font-bold text-indigo-600 text-lg border-b flex justify-between items-center">
+            Menu
+            <div class="flex items-center gap-3">
+                <button id="menuBtn2" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </nav>
+        <ul class="p-4 space-y-3">
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="index.php" class="block p-3 w-full h-full">Dashboard</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer bg-indigo-50 text-indigo-600"><a href="produk.php" class="block p-3 w-full h-full">Produk</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="laporan.php" class="block p-3 w-full h-full">Laporan</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a></li>
+            <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
+                <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Keluar</span>
+                </a>
+            </li>
         </ul>
-</div>
+    </div>
 
-    <section id="produk-page" class="space-y-8 p-4 md:p-6">
+    <section id="produk-page" class="space-y-6 p-4 md:p-6 max-w-7xl mx-auto">
         
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h2 class="text-2xl font-black text-slate-800 tracking-tight">Data Barang & Inventaris</h2>
                 <p class="text-sm text-slate-500 font-medium">Kelola stok produk secara real-time dari database.</p>
             </div>
-            <div class="flex items-center gap-2">
-                <button class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-lg shadow-indigo-100">
-                    <i class="fa-solid fa-plus"></i> Tambah Produk
-                </button>
+        </div>
+
+        <?php if (isset($_GET['status']) && $_GET['status'] == 'sukses_tambah'): ?>
+            <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl text-xs font-semibold flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-circle-check text-base"></i> Produk baru berhasil ditambahkan!
             </div>
+        <?php endif; ?>
+
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
+                <div class="w-9 h-9 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-box-open text-base"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-black text-slate-800 tracking-tight">Form Tambah Produk Baru</h3>
+                </div>
+            </div>
+
+            <form action="proses_tambah_produk.php" method="POST" class="space-y-4">
+                <input type="hidden" name="id_umkm" value="<?php echo $id_umkm_user; ?>">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Nama Produk <span class="text-red-500">*</span></label>
+                        <input type="text" name="nama_produk" required placeholder="Masukan Nama Produk" 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-medium text-slate-700">
+                    </div>
+                    
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kategori <span class="text-red-500">*</span></label>
+                        <input type="text" name="kategori" required placeholder="Contoh: Makanan, Minuman, Buah" 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-medium text-slate-700">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Stok Awal (Unit) <span class="text-red-500">*</span></label>
+                        <input type="number" name="sisa_stok" required min="0" placeholder="0" 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-medium text-slate-700">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Harga Beli / Modal (Rp) <span class="text-red-500">*</span></label>
+                        <input type="number" name="harga_beli" required min="0" placeholder="Masukkan harga modal" 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-medium text-slate-700">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Harga Jual (Rp) <span class="text-red-500">*</span></label>
+                        <input type="number" name="harga_jual" required min="0" placeholder="Masukkan harga jual" 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-medium text-slate-700">
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button type="submit" name="btn_simpan_produk" 
+                        class="w-full md:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 hover:scale-[1.01] transition-all flex items-center justify-center gap-2 shadow-md shadow-indigo-100">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
@@ -140,19 +183,15 @@ if ($stmtProduk) {
                     <tbody class="divide-y divide-slate-50">
                         
                     <?php 
-                    // Ganti $result menjadi $resultProduk agar sinkron dengan query filter UMKM di atas
                     if ($resultProduk && mysqli_num_rows($resultProduk) > 0):
                         while($row = mysqli_fetch_assoc($resultProduk)): 
                             
-                            // Logika sederhana untuk Health Bar
                             $stok = $row['sisa_stok'];
-                            $max_stok = 100; // Contoh batas max untuk persentase bar
+                            $max_stok = 100; 
                             
-                            // Antisipasi jika stok melebihi max_stok agar bar tidak jebol (max 100%)
                             $persen = ($stok / $max_stok) * 100;
                             if ($persen > 100) $persen = 100; 
                             
-                            // Penentuan warna berdasarkan jumlah stok
                             $bar_color = "bg-emerald-500";
                             $text_color = "text-emerald-600";
                             $status_label = "Aman";
@@ -172,7 +211,15 @@ if ($stmtProduk) {
                             <td class="p-4">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-lg">
-                                        <?php echo ($row['kategori'] == 'Minuman') ? '🥤' : '🥑'; ?>
+                                        <?php 
+                                        if ($row['kategori'] == 'Minuman') {
+                                            echo '🥤';
+                                        } elseif ($row['kategori'] == 'Makanan') {
+                                            echo '🍔';
+                                        } else {
+                                            echo '📦';
+                                        }
+                                        ?>
                                     </div>
                                     <div>
                                         <p class="text-xs font-bold text-slate-800"><?php echo htmlspecialchars($row['nama_produk']); ?></p>
