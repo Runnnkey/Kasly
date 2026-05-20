@@ -77,8 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <img src="Assets/LogoBaru.png" alt="Kasly Logo" class="w-24 h-24 mx-auto">
                 </div>
 
-                <h1 class="text-3xl font-bold text-center text-gray-900">Selamat Datang Kembali 👋</h1>
-                <p class="text-center text-gray-500 mt-2 mb-10">Masuk ke akun Kasly Anda</p>
+                <h1 class="text-3xl font-bold text-center text-gray-900">Login</h1>
+                <p class="text-center text-gray-500 mt-2 mb-10">Selamat Datang Kembali</p>
 
                 <?php if ($error): ?>
                     <div class="bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl mb-6 text-center">
@@ -111,7 +111,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="text-center mt-8">
                     <span class="text-gray-500">Belum punya akun?</span>
-                    <a href="register.php" class="text-indigo-600 font-semibold hover:underline ml-1">Daftar Sekarang</a>
+                    <a href="register.php" class="text-indigo-600 font-semibold hover:underline ml-1">Registrasi Sekarang</a>
+                    <br>
+                    <span class="text-gray-500">Punya bisnis?</span>
+                    <a href="registerumkm.php" class="text-indigo-600 font-semibold hover:underline ml-1">Daftar UMKM</a>
                 </div>
             </div>
         </div>

@@ -7,6 +7,9 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
+$query_umkm = "SELECT id_umkm, nama_usaha FROM ms_umkm ORDER BY nama_usaha ASC";
+$result_umkm = mysqli_query($conn, $query_umkm);
+
 $error = "";
 $success = "";
 $registered = false;
@@ -109,8 +112,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-700">ID UMKM <span class="text-red-500">*</span></label>
-                        <input type="number" name="id_umkm" required class="w-full px-5 py-3.5 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all placeholder:text-gray-400" placeholder="ID UMKM">
+                        <label class="block mb-2 text-sm font-medium text-gray-700">Nama Usaha UMKM <span class="text-red-500">*</span></label>
+                        <select name="id_umkm" required class="w-full px-5 py-3.5 rounded-2xl border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all text-sm font-medium text-gray-700 appearance-none">
+                            <option value="">Pilih UMKM</option>
+                            <?php 
+                            if ($result_umkm && mysqli_num_rows($result_umkm) > 0) {
+                                while ($umkm = mysqli_fetch_assoc($result_umkm)) {
+                                    ?>
+                                    <option value="<?php echo $umkm['id_umkm']; ?>">
+                                        <?php echo htmlspecialchars($umkm['nama_usaha']); ?> - ID: <?php echo $umkm['id_umkm']; ?>
+                                    </option>
+                                    <?php
+                                }
+                            } else {
+                                ?>
+                                <option value="" disabled>Belum ada UMKM yang terdaftar</option>
+                                <?php
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700">Role <span class="text-red-500">*</span></label>
