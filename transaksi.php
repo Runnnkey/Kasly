@@ -1,23 +1,56 @@
 <?php
-include 'koneksi.php';
+session_start();
 
-// Tabel Riwayat Transaksi
-$query = "(SELECT tanggal_transaksi as tgl, 'Penjualan' as tipe, total_harga as nominal, metode_pembayaran as metode, status_bayar as status FROM penjualan) 
-          UNION
-          (SELECT tanggal as tgl, 'Pembelian' as tipe, total_biaya as nominal, 'TUNAI' as metode, 'Selesai' as status FROM pembelian) 
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit(); 
+}
+
+require_once 'koneksi.php'; 
+
+$user_id = $_SESSION['user_id'];
+
+$queryUser  = "SELECT id_user, id_umkm, nama_lengkap FROM user WHERE id_user = '$user_id'";
+$resultUser = mysqli_query($conn, $queryUser);
+
+if (mysqli_num_rows($resultUser) === 0) {
+    session_destroy();
+    header("Location: login.php");
+    exit();
+}
+
+$rowUser = mysqli_fetch_assoc($resultUser);
+$inisial = strtoupper(substr($rowUser['nama_lengkap'], 0, 1));
+$id_umkm = $rowUser['id_umkm']; // Variabel kunci pengaman data
+
+
+$query = "(SELECT tanggal_transaksi as tgl, 'Penjualan' as tipe, total_harga as nominal, metode_pembayaran as metode, status_bayar as status 
+           FROM penjualan 
+           WHERE id_umkm = '$id_umkm') 
+          UNION ALL
+          (SELECT tanggal as tgl, 'Pembelian' as tipe, total_biaya as nominal, 'TUNAI' as metode, 'Selesai' as status 
+           FROM pembelian 
+           WHERE id_umkm = '$id_umkm') 
           ORDER BY tgl DESC";
 
 $result = mysqli_query($conn, $query);
 
 
-// Informasi Kartu (Lunas)
-$query_kas = "SELECT SUM(total_harga) as total_kas FROM penjualan WHERE status_bayar='Lunas' AND metode_pembayaran='Tunai'";
+$query_kas = "SELECT SUM(total_harga) as total_kas 
+              FROM penjualan 
+              WHERE id_umkm = '$id_umkm' 
+              AND status_bayar = 'Lunas' 
+              AND metode_pembayaran = 'Tunai'";
 $res_kas = mysqli_query($conn, $query_kas);
 $data_kas = mysqli_fetch_assoc($res_kas);
-$total_kas = $data_kas['total_kas'] ?? 0; // Jika NULL, set ke 0
+$total_kas = $data_kas['total_kas'] ?? 0; 
 
-// Informasi Kartu (Piutang)
-$query_piutang = "SELECT SUM(sisa_tagihan) as total_piutang, COUNT(id_piutang) as jml_transaksi FROM piutang WHERE status='Belum Lunas'";
+
+$query_piutang = "SELECT SUM(p.sisa_tagihan) as total_piutang, COUNT(p.id_piutang) as jml_transaksi 
+                  FROM piutang p
+                  INNER JOIN penjualan pj ON p.id_penjualan = pj.id_penjualan
+                  WHERE pj.id_umkm = '$id_umkm' 
+                  AND p.status = 'Belum Lunas'";
 $res_piutang = mysqli_query($conn, $query_piutang);
 $data_piutang = mysqli_fetch_assoc($res_piutang);
 $total_piutang = $data_piutang['total_piutang'] ?? 0;
