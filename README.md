@@ -26,30 +26,7 @@ Mengembangkan sistem backend, serta integrasi database
 
 Menu Utama (Sidebar Navigation)
 
-* Dashboard (`index.php`)  
-  Ringkasan saldo, greeting user, dan quick access ke fitur lain.
-
-* Transaksi (`transaksi.php`)  
-  Riwayat transaksi, total kas, piutang aktif, input penjualan & pembelian.
-
-* Produk (`produk.php`)  
-  Manajemen produk, stok barang, health bar stok, edit dan hapus produk.
-
-* Utang & Piutang (`utangPiutang.php`)  
-  Kelola piutang pelanggan dan utang ke supplier.
-
-* Laporan (`laporan.php`)  
-  Omzet, laba bersih, tren penjualan, produk terlaris, dan inventory alert.
-
-* Pengaturan (`pengaturan.php`)  
-  Profil usaha, pengaturan struk, ganti password, dan backup data.
-
-* Keluar (`logout.php`)  
-  Logout dari sistem.
-
-* Autentikasi 
-  * `login.php`
-  * `register.php`
+![alt text](<UML Kasly-SIteMap.jpg>)
 
 
 ## Tech Stack
