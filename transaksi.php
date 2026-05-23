@@ -140,7 +140,7 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
         </div>
         <div class="flex flex-wrap gap-2">
             <button class="bg-rose-500 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-rose-600 transition flex items-center gap-2 shadow-sm">
-                <i class="fa-solid fa-file-invoice-dollar"></i> Catat Biaya
+                <i class="fa-solid fa-receipt"></i> Catat Pembelian
             </button>
             <button class="bg-indigo-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 transition flex items-center gap-2 shadow-sm">
                 <i class="fa-solid fa-cart-plus"></i> Input Penjualan

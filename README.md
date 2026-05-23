@@ -24,8 +24,6 @@ Mengembangkan sistem backend, serta integrasi database
 
 ###  Website Features & Menu (Sitemap)
 
-Menu Utama (Sidebar Navigation)
-
 ![alt text](<UML Kasly-SIteMap.jpg>)
 
 

@@ -230,6 +230,14 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
                 </div>
             </div>
 
+            <div class="flex flex-wrap gap-2">
+                <button id="btnPiutang" class="bg-white border border-slate-200 text-slate-600 px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 hover:scale-105 transition-all flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-plus text-rose-500"></i> Piutang
+                </button>
+                <button id="btnUtang" class="bg-white border border-slate-200 text-slate-600 px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 hover:scale-105 transition-all flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-plus text-emerald-500"></i> Utang
+                </button>
+            </div>
         </div>
     </div>
 
@@ -425,22 +433,27 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
             </div>
         </div>
 
-        
 
-       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    
-        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+        <!-- POP UP PIUTANG -->
+         
+        <div id="modalPiutang" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-3xl rounded-3xl p-6 relative overflow-y-auto max-h-[90vh]">
+
+            <button id="closePiutang" class="absolute top-4 right-4 text-slate-500 hover:text-red-500">
+                     <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+        <!-- PENCATATAN PIUTANG -->
+    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
         <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
             <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
                 <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
             </div>
             <div>
                 <h3 class="text-base font-black text-slate-800 tracking-tight">Pencatatan Piutang Baru</h3>
+                <p class="text-xs text-slate-400 font-medium">Catat dan kelola tagihan yang harus dibayarkan oleh pelanggan dari transaksi penjualan.</p>
             </div>
-        </div>
-
-        <!-- PENCATATAN PIUTANG -->
-
+    </div>
         <form action="proses_piutang.php" method="POST" class="space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-2">
@@ -513,13 +526,26 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
             </div>
         </form>
     </div>
+        
+    </div>
+</div>
+        
+<!-- POP UP UTANG -->
+
+<div id="modalUtang" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-3xl rounded-3xl p-6 relative overflow-y-auto max-h-[90vh]">
+
+        <button id="closeUtang"
+        class="absolute top-4 right-4 text-slate-500 hover:text-red-500">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
 
         <!-- PENCATATAN UTANG -->
 
     <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
         <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
             <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
+                <i class="fa-solid fa-hand-holding text-lg"></i>
             </div>
             <div>
                 <h3 class="text-base font-black text-slate-800 tracking-tight">Pencatatan Utang</h3>
@@ -605,6 +631,9 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
         </form>
     </div>
 
+    </div>
+</div>
+        
     
 </div>
     </section>
@@ -704,6 +733,30 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
                 });
             }
         }
+        const btnPiutang = document.getElementById('btnPiutang');
+        const modalPiutang = document.getElementById('modalPiutang');
+        const closePiutang = document.getElementById('closePiutang');
+
+            btnPiutang.addEventListener('click', () => {
+                modalPiutang.classList.remove('hidden');
+            });
+
+            closePiutang.addEventListener('click', () => {
+                modalPiutang.classList.add('hidden');
+            });
+
+
+        const btnUtang = document.getElementById('btnUtang');
+        const modalUtang = document.getElementById('modalUtang');
+        const closeUtang = document.getElementById('closeUtang');
+
+            btnUtang.addEventListener('click', () => {
+                modalUtang.classList.remove('hidden');
+            });
+
+            closeUtang.addEventListener('click', () => {
+                modalUtang.classList.add('hidden');
+            });
 
     });
 </script>
