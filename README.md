@@ -40,7 +40,6 @@ Mengembangkan sistem backend, serta integrasi database
 **Dependencies** (package.json):
 * tailwindcss
 * @tailwindcss/cli
-* flowbite
 
 ## DBMS Configuration & Table Specification
 
