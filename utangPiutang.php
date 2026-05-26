@@ -436,11 +436,11 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
 
         <!-- POP UP PIUTANG -->
          
-        <div id="modalPiutang" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div class="bg-white w-full max-w-3xl rounded-3xl p-6 relative overflow-y-auto max-h-[90vh]">
+        <div id="modalPiutang" class="hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center py-10 px-4 overflow-y-auto">
+            <div class="bg-white w-full max-w-3xl rounded-3xl p-6 relative overflow-y-auto max-h-[90vh] overflow-y-auto">
 
-            <button id="closePiutang" class="absolute top-4 right-4 text-slate-500 hover:text-red-500">
-                     <i class="fa-solid fa-xmark text-xl"></i>
+            <button id="closePiutang" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-500 transition flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
         <!-- PENCATATAN PIUTANG -->
@@ -535,10 +535,13 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
 <div id="modalUtang" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-3xl rounded-3xl p-6 relative overflow-y-auto max-h-[90vh]">
 
-        <button id="closeUtang"
-        class="absolute top-4 right-4 text-slate-500 hover:text-red-500">
-            <i class="fa-solid fa-xmark text-xl"></i>
-        </button>
+        <div class="relative mb-4">
+
+    <button id="closeUtang" class="absolute top-0 right-0 w-10 h-10 rounded-full bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-500 transition flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+
+        </div>
 
         <!-- PENCATATAN UTANG -->
 
@@ -739,10 +742,12 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
 
             btnPiutang.addEventListener('click', () => {
                 modalPiutang.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
             });
 
             closePiutang.addEventListener('click', () => {
                 modalPiutang.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
             });
 
 
@@ -752,10 +757,12 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
 
             btnUtang.addEventListener('click', () => {
                 modalUtang.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
             });
 
             closeUtang.addEventListener('click', () => {
                 modalUtang.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
             });
 
     });
