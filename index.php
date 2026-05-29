@@ -3,10 +3,10 @@ session_start();
 
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     header("Location: login.php");
-    exit(); 
+    exit();
 }
 
-require_once 'koneksi.php'; 
+require_once 'koneksi.php';
 
 $user_id = $_SESSION['user_id'];
 $query   = "SELECT * FROM user WHERE id_user = '$user_id'";
@@ -25,6 +25,7 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,20 +34,24 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
     </style>
 </head>
+
 <body class="bg-slate-50 text-slate-800">
 
     <nav class="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50">
         <div class="flex items-center gap-3">
             <button id="menuBtn" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
-        <i class="fa-solid fa-bars text-lg"></i>
-    </button>
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
 
-    <div class="flex items-center gap-2">
-        <img src="Assets/LogoBaru.png" alt="Kasly Logo" class="w-12 h-12 object-contain" >
-    </div>
+            <div class="flex items-center gap-2">
+                <img src="Assets/LogoBaru.png" alt="Kasly Logo" class="w-12 h-12 object-contain">
+            </div>
         </div>
         <div class="flex items-center gap-4">
             <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition">
@@ -58,130 +63,130 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
         </div>
     </nav>
     <div id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
-    
-   <nav class="p-6 font-bold text-indigo-600 text-lg border-b flex justify-between items-center">
-    Menu
-        <div class="flex items-center gap-3">
-            <button id="menuBtn2" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
-                <i class="fa-solid fa-bars text-lg"></i>
-            </button>
-        </div>
-    </nav>
 
-    <ul class="p-4 space-y-3">
-        <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-    <a href="index.php" class="block p-3 w-full h-full">Dashboard</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
-    </li>
-    <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-        <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
-    </li>
-    <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
-        <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Keluar</span>
-        </a>
-    </li>
+        <nav class="p-6 font-bold text-indigo-600 text-lg border-b flex justify-between items-center">
+            Menu
+            <div class="flex items-center gap-3">
+                <button id="menuBtn2" class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </nav>
+
+        <ul class="p-4 space-y-3">
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="index.php" class="block p-3 w-full h-full">Dashboard</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
+            </li>
+            <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
+                <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Keluar</span>
+                </a>
+            </li>
         </ul>
-</div>
+    </div>
 
     <header class="px-8 py-6 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
-        <div class="bg-indigo-600 rounded-2xl p-6 md:p-8 text-white shadow-lg shadow-indigo-200 relative overflow-hidden">
-            <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full"></div>
-            <div class="relative z-10">
-                <h1 class="text-2xl font-bold mb-1">
-                    Halo, <span id="userName" class="text-yellow-300"><?php echo $row['nama_lengkap'] ?></span>! 👋
-                </h1>
-                <p class="text-indigo-100 text-sm md:text-base">
-                    Semangat buat hari ini! Cek ringkasan bisnismu di bawah ini.
-                </p>
-                <div class="mt-6 flex gap-3">
-                    <button class="bg-white text-indigo-600 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-50 transition">
-                        <i class="fa-solid fa-plus"></i> Transaksi
-                    </button>
-                    <button class="bg-indigo-500 text-white border border-indigo-400 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-400 transition">
-                        Laporan
-                    </button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-indigo-600 rounded-2xl p-6 md:p-8 text-white shadow-lg shadow-indigo-200 relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full"></div>
+                <div class="relative z-10">
+                    <h1 class="text-2xl font-bold mb-1">
+                        Halo, <span id="userName" class="text-yellow-300"><?php echo $row['nama_lengkap'] ?></span>! 👋
+                    </h1>
+                    <p class="text-indigo-100 text-sm md:text-base">
+                        Semangat buat hari ini! Cek ringkasan bisnismu di bawah ini.
+                    </p>
+                    <div class="mt-6 flex gap-3">
+                        <button class="bg-white text-indigo-600 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-50 transition">
+                            <i class="fa-solid fa-plus"></i> Transaksi
+                        </button>
+                        <button class="bg-indigo-500 text-white border border-indigo-400 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-400 transition">
+                            Laporan
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex items-center justify-center">
-            <p class="text-slate-400 font-medium">Area Grafik</p>
-        </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex items-center justify-center">
+                <p class="text-slate-400 font-medium">Area Grafik</p>
+            </div>
 
-    </div>
-</header>
+        </div>
+    </header>
 
     <main class="px-8 pb-16 max-w-7xl mx-auto">
-    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-        <i class="fa-solid fa-layer-group text-indigo-600"></i> Info Cepat
-    </h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <div id="saldo" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                <i class="fa-solid fa-wallet text-xl"></i>
-            </div>
-            <h3 class="font-bold text-lg mb-1">Ringkasan Saldo</h3>
-            <p class="text-slate-500 text-sm leading-relaxed">Pantau pemasukan dan pengeluaran harianmu secara otomatis.</p>
-        </div>
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-indigo-600"></i> Info Cepat
+        </h2>
 
-        <div id="produk" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                <i class="fa-solid fa-box-open text-xl"></i>
-            </div>
-            <h3 class="font-bold text-lg mb-1">Stok & Produk</h3>
-            <p class="text-slate-500 text-sm leading-relaxed">Kelola data barang dan update stok tanpa ribet hitung manual.</p>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <div id="utangPiutang" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
+            <div id="saldo" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <i class="fa-solid fa-wallet text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-1">Ringkasan Saldo</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Pantau pemasukan dan pengeluaran harianmu secara otomatis.</p>
             </div>
-            <h3 class="font-bold text-lg mb-1">Utang & Piutang</h3>
-            <p class="text-slate-500 text-sm leading-relaxed">Catat tagihan pelanggan dan dapatkan reminder jatuh tempo.</p>
-        </div>
 
-        <div id="laporanKeuangan" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
-            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                <i class="fa-solid fa-chart-line text-xl"></i>
+            <div id="produk" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <i class="fa-solid fa-box-open text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-1">Stok & Produk</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Kelola data barang dan update stok tanpa ribet hitung manual.</p>
             </div>
-            <h3 class="font-bold text-lg mb-1">Laporan Keuangan</h3>
-            <p class="text-slate-500 text-sm leading-relaxed">Lihat performa bisnismu dengan laporan yang rapi.</p>
-        </div>
-    </div> 
-</main> 
-<script src="src/js/script.js"></script>
-<script>
-    const menuNavigasi = {
-    'saldo': 'transaksi.php',
-    'produk': 'produk.php',
-    'utangPiutang': 'utangPiutang.php',
-    'laporanKeuangan': 'laporan.php'
-    };
 
-    for (const [id, url] of Object.entries(menuNavigasi)) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.addEventListener('click', () => window.location.href = url);
+            <div id="utangPiutang" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
+                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-1">Utang & Piutang</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Catat tagihan pelanggan dan dapatkan reminder jatuh tempo.</p>
+            </div>
+
+            <div id="laporanKeuangan" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
+                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <i class="fa-solid fa-chart-line text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-1">Laporan Keuangan</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Lihat performa bisnismu dengan laporan yang rapi.</p>
+            </div>
+        </div>
+    </main>
+    <script src="src/js/script.js"></script>
+    <script>
+        const menuNavigasi = {
+            'saldo': 'transaksi.php',
+            'produk': 'produk.php',
+            'utangPiutang': 'utangPiutang.php',
+            'laporanKeuangan': 'laporan.php'
+        };
+
+        for (const [id, url] of Object.entries(menuNavigasi)) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('click', () => window.location.href = url);
+            }
         }
-    }
-
-</script>
+    </script>
 
 </body>
+
 </html>

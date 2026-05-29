@@ -36,7 +36,6 @@ if ($stmtProduk) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +45,7 @@ if ($stmtProduk) {
     <link rel="stylesheet" href="dist/output.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;600;700&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
@@ -96,12 +95,19 @@ if ($stmtProduk) {
         </ul>
     </div>
 
-    <section id="produk-page" class="space-y-6 p-4 md:p-6 max-w-7xl mx-auto">
+    <section id="produk-page" class="space-y-8 p-4 md:p-6">
         
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Data Barang & Inventaris</h2>
-                <p class="text-sm text-slate-500 font-medium">Kelola stok produk secara real-time dari database.</p>
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center shadow-inner">
+                        <i class="fa-solid fa-box-open text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-800 tracking-tight">Data Barang & Inventaris</h2>
+                        <p class="text-sm text-slate-500 font-medium">Kelola stok produk secara real-time dari database.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -114,10 +120,10 @@ if ($stmtProduk) {
         <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
             <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
                 <div class="w-9 h-9 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
-                    <i class="fa-solid fa-box-open text-base"></i>
+                    <i class="fa-solid fa-plus text-base"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-black text-slate-800 tracking-tight">Form Tambah Produk Baru</h3>
+                    <h3 class="text-sm font-black text-slate-800 tracking-tight">FORM TAMBAH PRODUK BARU</h3>
                 </div>
             </div>
 
@@ -168,107 +174,107 @@ if ($stmtProduk) {
         </div>
 
         <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50/50 border-b border-slate-100">
-                        <tr>
-                            <th class="p-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Produk</th>
-                            <th class="p-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Kategori</th>
-                            <th class="p-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Stok & Health Bar</th>
-                            <th class="p-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Harga Jual</th>
-                            <th class="p-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Harga Beli</th>
-                            <th class="p-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2 uppercase text-xs tracking-widest">
+                    <i class="fa-solid fa-boxes-stacked text-indigo-500"></i> Semua Inventaris Produk
+                </h3>
+            </div>
+            
+            <div class="p-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <?php 
+                if ($resultProduk && mysqli_num_rows($resultProduk) > 0):
+                    while($row = mysqli_fetch_assoc($resultProduk)): 
                         
-                    <?php 
-                    if ($resultProduk && mysqli_num_rows($resultProduk) > 0):
-                        while($row = mysqli_fetch_assoc($resultProduk)): 
-                            
-                            $stok = $row['sisa_stok'];
-                            $max_stok = 100; 
-                            
-                            $persen = ($stok / $max_stok) * 100;
-                            if ($persen > 100) $persen = 100; 
-                            
-                            $bar_color = "bg-emerald-500";
-                            $text_color = "text-emerald-600";
-                            $status_label = "Aman";
+                        $stok = $row['sisa_stok'];
+                        $max_stok = 100; 
+                        $persen = ($stok / $max_stok) * 100;
+                        if ($persen > 100) $persen = 100; 
+                        
+                        // Default border samping dan warna status berdasarkan sisa stok
+                        $border_side_color = "border-l-emerald-500";
+                        $bar_color = "bg-emerald-500";
+                        $text_color = "text-emerald-600";
+                        $status_badge_bg = "bg-emerald-100";
+                        $status_label = "Aman";
 
-                            if($stok <= 10) {
-                                $bar_color = "bg-rose-500";
-                                $text_color = "text-rose-600";
-                                $status_label = "Kritis";
-                            } elseif ($stok <= 30) {
-                                $bar_color = "bg-amber-500";
-                                $text_color = "text-amber-600";
-                                $status_label = "Menipis";
-                            }
-                    ?>
-                        
-                        <tr class="hover:bg-slate-50/50 transition-colors group">
-                            <td class="p-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-lg">
-                                        <?php 
-                                        if ($row['kategori'] == 'Minuman') {
-                                            echo '🥤';
-                                        } elseif ($row['kategori'] == 'Makanan') {
-                                            echo '🍔';
-                                        } else {
-                                            echo '📦';
-                                        }
-                                        ?>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-bold text-slate-800"><?php echo htmlspecialchars($row['nama_produk']); ?></p>
-                                        <span class="text-[9px] text-slate-400 uppercase">ID: <?php echo $row['id_produk']; ?></span>
-                                    </div>
+                        if($stok <= 10) {
+                            $border_side_color = "border-l-rose-500";
+                            $bar_color = "bg-rose-500";
+                            $text_color = "text-rose-600";
+                            $status_badge_bg = "bg-rose-100";
+                            $status_label = "Kritis";
+                        } elseif ($stok <= 30) {
+                            $border_side_color = "border-l-amber-500";
+                            $bar_color = "bg-amber-500";
+                            $text_color = "text-amber-600";
+                            $status_badge_bg = "bg-amber-100";
+                            $status_label = "Menipis";
+                        }
+                ?>
+                    
+                    <div class="p-4 border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all border-l-4 <?php echo $border_side_color; ?>">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-lg shadow-sm">
+                                    <?php 
+                                    if ($row['kategori'] == 'Minuman') {
+                                        echo '🥤';
+                                    } elseif ($row['kategori'] == 'Makanan') {
+                                        echo '🍔';
+                                    } else {
+                                        echo '📦';
+                                    }
+                                    ?>
                                 </div>
-                            </td>
-                            <td class="p-4 text-xs font-medium text-slate-500"><?php echo htmlspecialchars($row['kategori']); ?></td>
-                            <td class="p-4">
-                                <div class="flex flex-col gap-1.5 min-w-[120px]">
-                                    <div class="flex justify-between items-center text-[10px] font-bold">
-                                        <span class="<?php echo $text_color; ?> uppercase"><?php echo $status_label; ?></span>
-                                        <span class="text-slate-700"><?php echo $stok; ?> Unit</span>
-                                    </div>
-                                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                        <div class="<?php echo $bar_color; ?> h-full rounded-full" style="width: <?php echo $persen; ?>%"></div>
-                                    </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm"><?php echo htmlspecialchars($row['nama_produk']); ?></h4>
+                                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Kategori: <?php echo htmlspecialchars($row['kategori']); ?> | ID: <?php echo $row['id_produk']; ?></p>
                                 </div>
-                            </td>
-                            <td class="p-4 text-xs font-black text-slate-700">Rp <?php echo number_format($row['harga_jual'], 0, ',', '.'); ?></td>
-                            <td class="p-4 text-xs font-black text-slate-700">Rp <?php echo number_format($row['harga_beli'], 0, ',', '.'); ?></td>
-                            <td class="p-4">
-                                <div class="flex items-center justify-end gap-2">
-                                    <a href="edit.php?id=<?php echo $row['id_produk']; ?>" class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 hover:bg-indigo-600 hover:text-white transition-all flex items-center justify-center text-xs shadow-sm">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </a>
-                                    <button onclick="confirmDelete(<?php echo $row['id_produk']; ?>)" class="w-8 h-8 rounded-lg bg-slate-100 text-rose-600 hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center text-xs shadow-sm">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                    <?php 
-                        endwhile; 
-                    else:
-                    ?>
-                        <tr>
-                            <td colspan="6" class="p-8 text-center text-xs font-medium text-slate-400 italic bg-slate-50/30">
-                                Belum ada data produk terdaftar untuk unit usaha Anda.
-                            </td>
-                        </tr>
-                    <?php endif; ?>
+                            </div>
+                            <span class="<?php echo $status_badge_bg; ?> <?php echo $text_color; ?> text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                                <?php echo $status_label; ?>
+                            </span>
+                        </div>
 
-                    </tbody>
-                </table>
+                        <div class="mb-4 space-y-1">
+                            <div class="flex justify-between text-[10px] font-bold text-slate-500">
+                                <span>Ketersediaan Stok</span>
+                                <span class="text-slate-700"><?php echo $stok; ?> Unit</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div class="<?php echo $bar_color; ?> h-full rounded-full transition-all duration-300" style="width: <?php echo $persen; ?>%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-2 border-t border-slate-50">
+                            <div class="space-y-0.5">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Harga Jual</p>
+                                <p class="text-base font-black text-slate-800">Rp <?php echo number_format($row['harga_jual'], 0, ',', '.'); ?></p>
+                                <p class="text-[9px] text-slate-400 font-medium">Beli: Rp <?php echo number_format($row['harga_beli'], 0, ',', '.'); ?></p>
+                            </div>
+                            
+                            <div class="flex items-center gap-2">
+                                <a href="edit.php?id=<?php echo $row['id_produk']; ?>" class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 hover:bg-indigo-600 hover:text-white transition-all flex items-center justify-center text-xs shadow-sm">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <button onclick="confirmDelete(<?php echo $row['id_produk']; ?>)" class="w-8 h-8 rounded-lg bg-slate-100 text-rose-600 hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center text-xs shadow-sm">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                <?php 
+                    endwhile; 
+                else:
+                ?>
+                    <div class="col-span-1 lg:col-span-2 p-8 text-center text-xs font-medium text-slate-400 italic border border-dashed border-slate-200 rounded-2xl">
+                        Belum ada data produk terdaftar untuk unit usaha Anda.
+                    </div>
+                <?php endif; ?>
             </div>
 
-            <div class="p-4 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            <div class="p-4 bg-slate-50/50 border-t border-slate-100 flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                 <div class="flex gap-2">
                     <button class="px-3 py-1 rounded bg-white border border-slate-200 hover:bg-slate-50 transition-all">Prev</button>
                     <button class="px-3 py-1 rounded bg-white border border-slate-200 hover:bg-slate-50 transition-all">Next</button>
@@ -276,6 +282,7 @@ if ($stmtProduk) {
             </div>
         </div>
     </section>
-<script src="src/js/script.js"></script>
+
+    <script src="src/js/script.js"></script>
 </body>
 </html>
