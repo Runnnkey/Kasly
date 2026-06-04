@@ -69,6 +69,17 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
+
+        /* Fix: pastikan backdrop modal menutupi seluruh halaman termasuk area scroll */
+        #modalPenjualan,
+        #modalPembelian {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 
@@ -286,7 +297,7 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
         </div>
 
         <!-- ==================== POP UP PENJUALAN ==================== -->
-        <div id="modalPenjualan" class="hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center py-10 px-4 overflow-y-auto">
+        <div id="modalPenjualan" class="hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center py-10 px-4 overflow-y-auto min-h-screen">
             <div class="bg-white w-full max-w-4xl rounded-3xl p-6 relative overflow-y-auto max-h-[90vh]">
 
                 <button id="closePenjualan" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-500 transition flex items-center justify-center">
@@ -436,7 +447,7 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
         </div>
 
         <!-- ==================== POP UP PEMBELIAN ==================== -->
-        <div id="modalPembelian" class="hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center py-10 px-4 overflow-y-auto">
+        <div id="modalPembelian" class="hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center py-10 px-4 overflow-y-auto min-h-screen">
             <div class="bg-white w-full max-w-4xl rounded-3xl p-6 relative overflow-y-auto max-h-[90vh]">
 
                 <button id="closePembelian" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-500 transition flex items-center justify-center">
