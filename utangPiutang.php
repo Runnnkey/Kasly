@@ -159,6 +159,16 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
+
+        /* Fix: backdrop modal piutang menutupi seluruh halaman termasuk area scroll */
+        #modalPiutang {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 
@@ -442,7 +452,7 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
 
         <!-- POP UP PIUTANG -->
 
-        <div id="modalPiutang" class="hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center py-10 px-4 overflow-y-auto">
+        <div id="modalPiutang" class="hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center py-10 px-4 overflow-y-auto min-h-screen">
             <div class="bg-white w-full max-w-3xl rounded-3xl p-6 relative overflow-y-auto max-h-[90vh] overflow-y-auto">
 
                 <button id="closePiutang" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-500 transition flex items-center justify-center">
