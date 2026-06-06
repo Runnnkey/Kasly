@@ -10,7 +10,7 @@ require_once 'koneksi.php';
 
 $user_id = $_SESSION['user_id'];
 
-$queryUser  = "SELECT id_user, id_umkm, nama_lengkap, role FROM user WHERE id_user = '$user_id'";
+$queryUser  = "SELECT id_user, id_umkm, nama_lengkap FROM user WHERE id_user = '$user_id'";
 $resultUser = mysqli_query($conn, $queryUser);
 
 if (mysqli_num_rows($resultUser) === 0) {
@@ -79,6 +79,13 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+        }
+
+        /* Modal tambah pelanggan & supplier harus di atas modal utama */
+        #modalTambahPelanggan,
+        #modalTambahSupplier {
+            z-index: 9999 !important;
         }
     </style>
 </head>
@@ -114,29 +121,12 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
             </div>
         </nav>
         <ul class="p-4 space-y-3">
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-                <a href="index.php" class="block p-3 w-full h-full">Dashboard</a>
-            </li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-                <a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a>
-            </li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-                <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
-            </li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-                <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
-            </li>
-
-            <?php if ($rowUser['role'] !== 'Kasir'): ?>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-                <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
-            </li>
-            <?php endif; ?>
-
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
-                <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
-            </li>
-            
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="index.php" class="block p-3 w-full h-full">Dashboard</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer bg-indigo-50 text-indigo-600"><a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="produk.php" class="block p-3 w-full h-full">Produk</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="laporan.php" class="block p-3 w-full h-full">Laporan</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a></li>
             <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
                 <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -161,11 +151,9 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <?php if ($rowUser['role'] !== 'Kasir'): ?>
                     <button class="bg-rose-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-600 hover:scale-[1.02] transition-all flex items-center gap-2 shadow-md shadow-rose-100">
                         <i class="fa-solid fa-receipt"></i> Catat Pembelian
                     </button>
-                    <?php endif; ?>
                     <button class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all flex items-center gap-2 shadow-md shadow-indigo-100">
                         <i class="fa-solid fa-cart-plus"></i> Input Penjualan
                     </button>
@@ -620,6 +608,65 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
 
     </section>
 
+
+    <!-- ==================== MODAL TAMBAH PELANGGAN ==================== -->
+    <div id="modalTambahPelanggan" class="hidden fixed inset-0 z-[60] flex items-center justify-center px-4" style="background-color: rgba(0,0,0,0.6);">
+        <div class="bg-white w-full max-w-md rounded-2xl p-6 relative shadow-xl">
+            <button id="closeTambahPelanggan" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-500 transition flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+                <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-user-plus text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-black text-slate-800">Tambah Pelanggan Baru</h3>
+                    <p class="text-xs text-slate-400">Isi data lalu simpan, halaman akan kembali otomatis</p>
+                </div>
+            </div>
+            <form action="proses_tambah_pelanggan.php" method="POST" id="formTambahPelanggan" class="space-y-3">
+                <div>
+                    <label class="text-xs font-black text-slate-500 uppercase block mb-1">Nama Pelanggan <span class="text-red-500">*</span></label>
+                    <input type="text" name="nama_pelanggan" required placeholder="Masukkan nama pelanggan" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-medium text-slate-800">
+                </div>
+                <button type="submit" class="w-full py-3 bg-emerald-600 text-white rounded-xl text-sm font-bold hover:bg-emerald-700 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Pelanggan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL TAMBAH SUPPLIER ==================== -->
+    <div id="modalTambahSupplier" class="hidden fixed inset-0 z-[60] flex items-center justify-center px-4" style="background-color: rgba(0,0,0,0.6);">
+        <div class="bg-white w-full max-w-md rounded-2xl p-6 relative shadow-xl">
+            <button id="closeTambahSupplier" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-500 transition flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+                <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-truck-plus text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-black text-slate-800">Tambah Supplier Baru</h3>
+                    <p class="text-xs text-slate-400">Isi data lalu simpan, halaman akan kembali otomatis</p>
+                </div>
+            </div>
+            <form action="proses_tambah_supplier.php" method="POST" id="formTambahSupplier" class="space-y-3">
+                <div>
+                    <label class="text-xs font-black text-slate-500 uppercase block mb-1">Nama Supplier <span class="text-red-500">*</span></label>
+                    <input type="text" name="nama_supplier" required placeholder="Masukkan nama supplier" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm font-medium text-slate-800">
+                </div>
+                <div>
+                    <label class="text-xs font-black text-slate-500 uppercase block mb-1">Kontak</label>
+                    <input type="text" name="kontak" placeholder="No. HP / Email supplier" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm font-medium text-slate-800">
+                </div>
+                <button type="submit" class="w-full py-3 bg-purple-600 text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Supplier
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script src="src/js/script.js"></script>
     <script>
         // ==================== MODAL PENJUALAN ====================
@@ -817,6 +864,65 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
             document.getElementById('harga_beli_manual').value = '';
             select.value = '';
         });
+
+
+        // ==================== MODAL TAMBAH PELANGGAN ====================
+        const modalTambahPelanggan = document.getElementById('modalTambahPelanggan');
+        document.getElementById('btnTambahPelanggan')?.addEventListener('click', () => {
+            modalTambahPelanggan.classList.remove('hidden');
+        });
+        document.getElementById('closeTambahPelanggan')?.addEventListener('click', () => {
+            modalTambahPelanggan.classList.add('hidden');
+        });
+
+        // Simpan keranjang ke LocalStorage sebelum submit form tambah pelanggan
+        document.getElementById('formTambahPelanggan')?.addEventListener('submit', () => {
+            localStorage.setItem('keranjang_penjualan', JSON.stringify(keranjang));
+        });
+
+        // ==================== MODAL TAMBAH SUPPLIER ====================
+        const modalTambahSupplier = document.getElementById('modalTambahSupplier');
+        document.getElementById('btnTambahSupplier')?.addEventListener('click', () => {
+            modalTambahSupplier.classList.remove('hidden');
+        });
+        document.getElementById('closeTambahSupplier')?.addEventListener('click', () => {
+            modalTambahSupplier.classList.add('hidden');
+        });
+
+        // Simpan keranjang ke LocalStorage sebelum submit form tambah supplier
+        document.getElementById('formTambahSupplier')?.addEventListener('submit', () => {
+            localStorage.setItem('keranjang_pembelian', JSON.stringify(keranjangPembelian));
+        });
+
+        // ==================== RESTORE KERANJANG DARI LOCALSTORAGE ====================
+        const urlParams = new URLSearchParams(window.location.search);
+        const bukaModal = urlParams.get('buka');
+
+        if (bukaModal === 'penjualan') {
+            const simpan = localStorage.getItem('keranjang_penjualan');
+            if (simpan) {
+                try { keranjang = JSON.parse(simpan); updateKeranjangDisplay(); } catch(e) {}
+            }
+            if (modalPenjualan) {
+                modalPenjualan.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+            localStorage.removeItem('keranjang_penjualan');
+            history.replaceState(null, '', 'transaksi.php');
+        }
+
+        if (bukaModal === 'pembelian') {
+            const simpan = localStorage.getItem('keranjang_pembelian');
+            if (simpan) {
+                try { keranjangPembelian = JSON.parse(simpan); updateKeranjangPembelianDisplay(); } catch(e) {}
+            }
+            if (modalPembelian) {
+                modalPembelian.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+            localStorage.removeItem('keranjang_pembelian');
+            history.replaceState(null, '', 'transaksi.php');
+        }
 
         window.onclick = function(event) {
             if (event.target === modalPenjualan) {
