@@ -86,12 +86,17 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
             </li>
+
+            <?php if ($row['role'] !== 'Kasir'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
             </li>
+            <?php endif; ?>
+
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
             </li>
+            
             <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
                 <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -160,14 +165,16 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
                 <h3 class="font-bold text-lg mb-1">Utang & Piutang</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Catat tagihan pelanggan dan dapatkan reminder jatuh tempo.</p>
             </div>
-
+            <?php if ($row['role'] !== 'Kasir'): ?>
             <div id="laporanKeuangan" class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-400 transition-all group cursor-pointer shadow-sm hover:shadow-md">
                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
                     <i class="fa-solid fa-chart-line text-xl"></i>
                 </div>
+                
                 <h3 class="font-bold text-lg mb-1">Laporan Keuangan</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Lihat performa bisnismu dengan laporan yang rapi.</p>
             </div>
+            <?php endif; ?>
         </div>
     </main>
     <script src="src/js/script.js"></script>

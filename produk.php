@@ -97,12 +97,29 @@ if ($stmtProduk) {
             </div>
         </nav>
         <ul class="p-4 space-y-3">
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="index.php" class="block p-3 w-full h-full">Dashboard</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer bg-indigo-50 text-indigo-600"><a href="produk.php" class="block p-3 w-full h-full">Produk</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="laporan.php" class="block p-3 w-full h-full">Laporan</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="index.php" class="block p-3 w-full h-full">Dashboard</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
+            </li>
+
+            <?php if ($rowUser['role'] !== 'Kasir'): ?>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
+            </li>
+            <?php endif; ?>
+
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
+            </li>
+            
             <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
                 <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -134,6 +151,7 @@ if ($stmtProduk) {
             </div>
         <?php endif; ?>
 
+        <?php if ($rowUser['role'] !== 'Kasir'): ?>
         <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
             <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
                 <div class="w-9 h-9 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
@@ -189,6 +207,7 @@ if ($stmtProduk) {
                 </div>
             </form>
         </div>
+        <?php endif; ?>
 
         <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
@@ -270,6 +289,7 @@ if ($stmtProduk) {
                                     <p class="text-[9px] text-slate-400 font-medium">Beli: Rp <?php echo number_format($row['harga_beli'], 0, ',', '.'); ?></p>
                                 </div>
 
+                                <?php if ($rowUser['role'] !== 'Kasir'): ?>
                                 <div class="flex items-center gap-2">
                                     <a href="edit.php?id=<?php echo $row['id_produk']; ?>" class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 hover:bg-indigo-600 hover:text-white transition-all flex items-center justify-center text-xs shadow-sm">
                                         <i class="fa-solid fa-pen"></i>
@@ -277,7 +297,8 @@ if ($stmtProduk) {
                                     <button onclick="confirmDelete(<?php echo $row['id_produk']; ?>)" class="w-8 h-8 rounded-lg bg-slate-100 text-rose-600 hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center text-xs shadow-sm">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
-                                </div>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
 

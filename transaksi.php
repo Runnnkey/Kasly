@@ -10,7 +10,7 @@ require_once 'koneksi.php';
 
 $user_id = $_SESSION['user_id'];
 
-$queryUser  = "SELECT id_user, id_umkm, nama_lengkap FROM user WHERE id_user = '$user_id'";
+$queryUser  = "SELECT id_user, id_umkm, nama_lengkap, role FROM user WHERE id_user = '$user_id'";
 $resultUser = mysqli_query($conn, $queryUser);
 
 if (mysqli_num_rows($resultUser) === 0) {
@@ -114,12 +114,29 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
             </div>
         </nav>
         <ul class="p-4 space-y-3">
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="index.php" class="block p-3 w-full h-full">Dashboard</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer bg-indigo-50 text-indigo-600"><a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="produk.php" class="block p-3 w-full h-full">Produk</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="laporan.php" class="block p-3 w-full h-full">Laporan</a></li>
-            <li class="hover:bg-slate-100 rounded-lg cursor-pointer"><a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a></li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="index.php" class="block p-3 w-full h-full">Dashboard</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
+            </li>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
+            </li>
+
+            <?php if ($rowUser['role'] !== 'Kasir'): ?>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
+            </li>
+            <?php endif; ?>
+
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
+            </li>
+            
             <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
                 <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -144,9 +161,11 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-2">
+                    <?php if ($rowUser['role'] !== 'Kasir'): ?>
                     <button class="bg-rose-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-600 hover:scale-[1.02] transition-all flex items-center gap-2 shadow-md shadow-rose-100">
                         <i class="fa-solid fa-receipt"></i> Catat Pembelian
                     </button>
+                    <?php endif; ?>
                     <button class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all flex items-center gap-2 shadow-md shadow-indigo-100">
                         <i class="fa-solid fa-cart-plus"></i> Input Penjualan
                     </button>

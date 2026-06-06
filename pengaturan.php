@@ -91,6 +91,10 @@ if (isset($_POST['btn_update_profil'])) {
 
 // UPDATE PROFIL UMKM 
 if (isset($_POST['btn_update_umkm'])) {
+    if ($rowUser['role'] !== 'Owner') {
+        header("Location: pengaturan.php?status=akses_ditolak");
+        exit();
+    }
     $nama_usaha   = mysqli_real_escape_string($conn, $_POST['nama_usaha']);
     $no_telepon   = mysqli_real_escape_string($conn, $_POST['no_telepon']);
     $bidang_usaha = mysqli_real_escape_string($conn, $_POST['bidang_usaha']);
@@ -181,12 +185,17 @@ if (isset($_POST['btn_update_umkm'])) {
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
             </li>
+
+            <?php if ($rowUser['role'] !== 'Kasir'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
             </li>
+            <?php endif; ?>
+
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
             </li>
+            
             <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
                 <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -218,23 +227,23 @@ if (isset($_POST['btn_update_umkm'])) {
 
                     <div class="space-y-2">
                         <button id="btnUser" class="w-full text-left px-5 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-sm flex items-center gap-3 shadow-lg shadow-indigo-100 transition-all">
-                            <i class="fa-solid fa-user w-5"></i>
-                            Profil User
+                            <i class="fa-solid fa-user w-5"></i> Profil User
                         </button>
 
-                        <button id="btnUMKM" class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
-                            <i class="fa-solid fa-store w-5"></i>
-                            Profil UMKM & Struk
-                        </button>
+                        <?php if ($rowUser['role'] === 'Owner'): ?>
+                            <button id="btnUMKM" class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
+                                <i class="fa-solid fa-store w-5"></i> Profil UMKM & Struk
+                            </button>
+                        <?php endif; ?>
 
-                        <button id="btnPreferensi" class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
-                            <i class="fa-solid fa-sliders w-5"></i>
-                            Preferensi Aplikasi
-                        </button>
+                        <?php if ($rowUser['role'] !== 'Kasir'): ?>
+                            <button id="btnPreferensi" class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
+                                <i class="fa-solid fa-sliders w-5"></i> Preferensi Aplikasi
+                            </button>
+                        <?php endif; ?>
 
                         <button id="btnKeamanan" class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
-                            <i class="fa-solid fa-user-shield w-5"></i>
-                            Keamanan & Data
+                            <i class="fa-solid fa-user-shield w-5"></i> Keamanan & Data
                         </button>
                     </div>
                 </div>
@@ -328,6 +337,7 @@ if (isset($_POST['btn_update_umkm'])) {
                                     </div>
                                 </div>
 
+                            <?php if ($rowUser['role'] === 'Owner'): ?>
                                 <div id="kontenUMKM" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm w-full">
                                     <div class="p-6 border-b border-slate-100 bg-slate-50/50">
                                         <h3 class="font-bold text-slate-800">Profil Usaha & Struk</h3>
@@ -381,7 +391,9 @@ if (isset($_POST['btn_update_umkm'])) {
                                         </form>
                                     </div>
                                 </div>
+                            <?php endif; ?>
 
+                            <?php if ($rowUser['role'] !== 'Kasir'): ?>
                                 <div id="kontenPreferensi" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm w-full">
                                     <div class="p-6 border-b border-slate-100 bg-slate-50/50">
                                         <h3 class="font-bold text-slate-800">Preferensi Aplikasi</h3>
@@ -417,6 +429,7 @@ if (isset($_POST['btn_update_umkm'])) {
                                         </div>
                                     </div>
                                 </div>
+                            <?php endif; ?>
 
 
                                 <!-- 4. KEAMANAN DATA -->
@@ -463,23 +476,22 @@ if (isset($_POST['btn_update_umkm'])) {
         const classAktif = ["bg-indigo-600", "text-white", "shadow-lg", "shadow-indigo-100"];
         const classNormal = ["text-slate-500", "hover:bg-slate-50"];
 
-        const daftarMenu = [{
-                button: document.getElementById("btnUser"),
-                target: "top"
-            },
-            {
-                button: document.getElementById("btnUMKM"),
-                target: document.getElementById("kontenUMKM")
-            },
-            {
-                button: document.getElementById("btnPreferensi"),
-                target: document.getElementById("kontenPreferensi")
-            },
-            {
-                button: document.getElementById("btnKeamanan"),
-                target: document.getElementById("kontenKeamanan")
-            }
-        ];
+        const daftarMenu = [];
+
+        const btnUser = document.getElementById("btnUser");
+        if (btnUser) daftarMenu.push({ button: btnUser, target: "top" });
+
+        const btnUMKM = document.getElementById("btnUMKM");
+        const kontenUMKM = document.getElementById("kontenUMKM");
+        if (btnUMKM && kontenUMKM) daftarMenu.push({ button: btnUMKM, target: kontenUMKM });
+
+        const btnPreferensi = document.getElementById("btnPreferensi");
+        const kontenPreferensi = document.getElementById("kontenPreferensi");
+        if (btnPreferensi && kontenPreferensi) daftarMenu.push({ button: btnPreferensi, target: kontenPreferensi });
+
+        const btnKeamanan = document.getElementById("btnKeamanan");
+        const kontenKeamanan = document.getElementById("kontenKeamanan");
+        if (btnKeamanan && kontenKeamanan) daftarMenu.push({ button: btnKeamanan, target: kontenKeamanan });
 
         daftarMenu.forEach(item => {
             if (item.button) {

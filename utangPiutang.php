@@ -10,7 +10,7 @@ require_once 'koneksi.php';
 
 $user_id = $_SESSION['user_id'];
 
-$query_user = "SELECT id_user, id_umkm, nama_lengkap FROM user WHERE id_user = '$user_id'";
+$query_user = "SELECT id_user, id_umkm, nama_lengkap, role FROM user WHERE id_user = '$user_id'";
 $result_user = mysqli_query($conn, $query_user);
 
 if (mysqli_num_rows($result_user) === 0) {
@@ -216,12 +216,17 @@ $result_dropdown_penjualan = mysqli_query($conn, $query_dropdown_penjualan);
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
             </li>
+
+            <?php if ($row['role'] !== 'Kasir'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
             </li>
+            <?php endif; ?>
+
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
             </li>
+            
             <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
                 <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
                     <i class="fa-solid fa-right-from-bracket"></i>
