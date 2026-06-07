@@ -182,16 +182,14 @@ if (isset($_POST['btn_update_umkm'])) {
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
             </li>
+            <?php if ($rowUser['role'] !== 'Kasir'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
             </li>
-
-            <?php if ($rowUser['role'] !== 'Kasir'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
             </li>
             <?php endif; ?>
-
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
             </li>
