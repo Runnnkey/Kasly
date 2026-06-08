@@ -52,6 +52,9 @@ $res_piutang = mysqli_query($conn, $query_piutang);
 $data_piutang = mysqli_fetch_assoc($res_piutang);
 $total_piutang = $data_piutang['total_piutang'] ?? 0;
 $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
+
+// Cek status notifikasi dari URL
+$status = $_GET['status'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -91,6 +94,37 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
 </head>
 
 <body class="bg-slate-50/40">
+
+    <!-- ==================== NOTIFIKASI STATUS ==================== -->
+    <?php if ($status == 'penjualan_sukses'): ?>
+        <div id="notif-banner" class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl text-xs font-semibold flex items-center gap-2 mx-4 mt-4">
+            <i class="fa-solid fa-circle-check text-base"></i> Transaksi penjualan berhasil disimpan!
+        </div>
+    <?php elseif ($status == 'penjualan_gagal'): ?>
+        <div id="notif-banner" class="p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl text-xs font-semibold flex items-center gap-2 mx-4 mt-4">
+            <i class="fa-solid fa-circle-exclamation text-base"></i> Gagal menyimpan transaksi penjualan!
+        </div>
+    <?php elseif ($status == 'pembelian_sukses'): ?>
+        <div id="notif-banner" class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl text-xs font-semibold flex items-center gap-2 mx-4 mt-4">
+            <i class="fa-solid fa-circle-check text-base"></i> Pembelian stok berhasil dicatat!
+        </div>
+    <?php elseif ($status == 'pembelian_gagal'): ?>
+        <div id="notif-banner" class="p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl text-xs font-semibold flex items-center gap-2 mx-4 mt-4">
+            <i class="fa-solid fa-circle-exclamation text-base"></i> Gagal mencatat pembelian stok!
+        </div>
+    <?php elseif ($status == 'pelanggan_sukses'): ?>
+        <div id="notif-banner" class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl text-xs font-semibold flex items-center gap-2 mx-4 mt-4">
+            <i class="fa-solid fa-circle-check text-base"></i> Pelanggan baru berhasil ditambahkan!
+        </div>
+    <?php elseif ($status == 'pelanggan_gagal'): ?>
+        <div id="notif-banner" class="p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl text-xs font-semibold flex items-center gap-2 mx-4 mt-4">
+            <i class="fa-solid fa-circle-exclamation text-base"></i> Gagal menambahkan pelanggan baru!
+        </div>
+    <?php elseif ($status == 'supplier_sukses'): ?>
+        <div id="notif-banner" class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl text-xs font-semibold flex items-center gap-2 mx-4 mt-4">
+            <i class="fa-solid fa-circle-check text-base"></i> Supplier baru berhasil ditambahkan!
+        </div>
+    <?php endif; ?>
 
     <nav class="flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50">
         <div class="flex items-center gap-3">
@@ -947,6 +981,39 @@ $jml_piutang = $data_piutang['jml_transaksi'] ?? 0;
                 modalPembelian.classList.add('hidden');
                 document.body.classList.remove('overflow-hidden');
             }
+        }
+
+        // ==================== NOTIFIKASI ALERT & AUTO-HIDE ====================
+        <?php if ($status == 'penjualan_sukses'): ?>
+            alert('✅ Transaksi penjualan berhasil disimpan!');
+            history.replaceState(null, '', 'transaksi.php');
+        <?php elseif ($status == 'penjualan_gagal'): ?>
+            alert('❌ Gagal menyimpan transaksi penjualan!');
+        <?php elseif ($status == 'pembelian_sukses'): ?>
+            alert('✅ Pembelian stok berhasil dicatat!');
+            history.replaceState(null, '', 'transaksi.php');
+        <?php elseif ($status == 'pembelian_gagal'): ?>
+            alert('❌ Gagal mencatat pembelian stok!');
+        <?php elseif ($status == 'pelanggan_sukses'): ?>
+            alert('✅ Pelanggan baru berhasil ditambahkan!');
+            history.replaceState(null, '', 'transaksi.php');
+        <?php elseif ($status == 'pelanggan_gagal'): ?>
+            alert('❌ Gagal menambahkan pelanggan baru!');
+        <?php elseif ($status == 'supplier_sukses'): ?>
+            alert('✅ Supplier baru berhasil ditambahkan!');
+            history.replaceState(null, '', 'transaksi.php');
+        <?php elseif ($status == 'supplier_gagal'): ?>
+            alert('❌ Gagal menambahkan supplier baru!');
+        <?php endif; ?>
+
+        // Auto-hide notifikasi banner setelah 4 detik
+        const notifBanner = document.getElementById('notif-banner');
+        if (notifBanner) {
+            setTimeout(() => {
+                notifBanner.style.transition = 'opacity 0.5s ease';
+                notifBanner.style.opacity = '0';
+                setTimeout(() => notifBanner.remove(), 500);
+            }, 4000);
         }
     </script>
 

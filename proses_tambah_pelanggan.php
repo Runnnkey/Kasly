@@ -13,7 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($nama_pelanggan)) {
         $query = "INSERT INTO pelanggan (nama_pelanggan) VALUES ('$nama_pelanggan')";
-        mysqli_query($conn, $query);
+        $result = mysqli_query($conn, $query);
+
+        if ($result) {
+            header("Location: transaksi.php?buka=penjualan&status=pelanggan_sukses");
+        } else {
+            header("Location: transaksi.php?buka=penjualan&status=pelanggan_gagal");
+        }
+        exit();
     }
 }
 

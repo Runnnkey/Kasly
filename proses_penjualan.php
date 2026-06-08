@@ -23,14 +23,12 @@ $detail_transaksi = json_decode($_POST['detail_transaksi'], true);
 $id_pelanggan = $_POST['id_pelanggan'] ?? 0;
 
 if ($total_harga <= 0 || empty($detail_transaksi)) {
-    $_SESSION['error'] = "Tidak ada produk yang dibeli!";
-    header("Location: transaksi.php");
+    header("Location: transaksi.php?status=penjualan_gagal");
     exit();
 }
 
 if ($id_pelanggan == 0) {
-    $_SESSION['error'] = "Pilih pelanggan terlebih dahulu!";
-    header("Location: transaksi.php");
+    header("Location: transaksi.php?status=penjualan_gagal");
     exit();
 }
 
@@ -78,15 +76,12 @@ try {
     }
     
     mysqli_commit($conn);
-    
-    $_SESSION['success'] = "Transaksi penjualan berhasil disimpan!";
-    header("Location: transaksi.php");
+    header("Location: transaksi.php?status=penjualan_sukses");
     exit();
     
 } catch (Exception $e) {
     mysqli_rollback($conn);
-    $_SESSION['error'] = "Gagal: " . $e->getMessage();
-    header("Location: transaksi.php");
+    header("Location: transaksi.php?status=penjualan_gagal");
     exit();
 }
 ?>

@@ -14,7 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($nama_supplier)) {
         $query = "INSERT INTO supplier (nama_supplier, kontak) VALUES ('$nama_supplier', '$kontak')";
-        mysqli_query($conn, $query);
+        $result = mysqli_query($conn, $query);
+
+        if ($result) {
+            header("Location: transaksi.php?buka=pembelian&status=supplier_sukses");
+        } else {
+            header("Location: transaksi.php?buka=pembelian&status=supplier_gagal");
+        }
+        exit();
     }
 }
 
