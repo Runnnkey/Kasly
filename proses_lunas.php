@@ -46,7 +46,7 @@ if (isset($_GET['id'])) {
             // Jika semua query sukses tanpa error, terapkan ke database
             mysqli_commit($conn);
             
-            header("Location: utangPiutang.php?status=sukses_lunas");
+            header("Location: utangPiutang.php?status=piutang_lunas");
             exit();
         } else {
             throw new Exception("Data piutang tidak ditemukan.");
@@ -55,7 +55,7 @@ if (isset($_GET['id'])) {
     } catch (Exception $e) {
         // Jika salah satu query gagal, batalkan semua perubahan agar data tidak korup
         mysqli_rollback($conn);
-        header("Location: utangPiutang.php?status=gagal_proses");
+        header("Location: utangPiutang.php?status=gagal_lunas");
         exit();
     }
 

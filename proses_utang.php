@@ -20,7 +20,7 @@ if (isset($_POST['btn_simpan_utang'])) {
 
     // Validasi dasar
     if (empty($id_pembelian) || empty($id_supplier) || empty($jatuh_tempo) || empty($status) || $nominal_bayar <= 0) {
-        header("Location: utangPiutang.php?status=gagal_input_kosong");
+        header("Location: utangPiutang.php?status=utang_gagal");
         exit();
     }
 
@@ -50,12 +50,13 @@ if (isset($_POST['btn_simpan_utang'])) {
         }
 
         mysqli_commit($conn);
-        header("Location: utangPiutang.php?status=sukses_update_utang");
+        header("Location: utangPiutang.php?status=utang_sukses");
         exit();
 
     } catch (Exception $e) {
         mysqli_rollback($conn);
-        echo "Gagal memperbarui data utang ke supplier: " . $e->getMessage();
+        header("Location: utangPiutang.php?status=utang_gagal");
+        exit();
     }
 
 } else {

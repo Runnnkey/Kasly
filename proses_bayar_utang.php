@@ -47,7 +47,7 @@ if (isset($_GET['id'])) {
             // Jika kedua tabel berhasil di-update tanpa error, simpan permanen
             mysqli_commit($conn);
             
-            header("Location: utangPiutang.php?status=sukses_lunas_utang");
+            header("Location: utangPiutang.php?status=utang_lunas");
             exit();
         } else {
             throw new Exception("Data utang tidak ditemukan.");
@@ -56,7 +56,7 @@ if (isset($_GET['id'])) {
     } catch (Exception $e) {
         // Jika salah satu proses gagal, batalkan semua agar data tidak selisih
         mysqli_rollback($conn);
-        header("Location: utangPiutang.php?status=gagal_proses");
+        header("Location: utangPiutang.php?status=gagal_lunas");
         exit();
     }
 

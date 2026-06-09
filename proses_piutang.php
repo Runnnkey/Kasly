@@ -17,7 +17,7 @@ if (isset($_POST['btn_simpan_piutang'])) {
     $jatuh_tempo   = $_POST['jatuh_tempo'];
     $status        = $_POST['status']; 
     if (empty($id_penjualan) || empty($id_pelanggan) || empty($jatuh_tempo) || empty($status) || $nominal_bayar <= 0) {
-        header("Location: utangPiutang.php?status=gagal_input_kosong");
+        header("Location: utangPiutang.php?status=piutang_gagal");
         exit();
     }
 
@@ -46,12 +46,13 @@ if (isset($_POST['btn_simpan_piutang'])) {
         }
 
         mysqli_commit($conn);
-        header("Location: utangPiutang.php?status=sukses_update_piutang");
+        header("Location: utangPiutang.php?status=piutang_sukses");
         exit();
 
     } catch (Exception $e) {
         mysqli_rollback($conn);
-        echo "Gagal memperbarui data piutang: " . $e->getMessage();
+        header("Location: utangPiutang.php?status=piutang_gagal");
+        exit();
     }
 
 } else {
