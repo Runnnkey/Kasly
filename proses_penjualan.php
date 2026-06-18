@@ -52,6 +52,19 @@ try {
         $kuantitas = $item['qty'];
         $subtotal = $item['qty'] * $item['harga'];
         
+        $queryCek = "SELECT sisa_stok, nama_produk FROM produk WHERE id_produk = ?";
+        $stmtCek = mysqli_prepare($conn, $queryCek);
+        mysqli_stmt_bind_param($stmtCek, "i", $id_produk);
+        mysqli_stmt_execute($stmtCek);
+        $resCek = mysqli_stmt_get_result($stmtCek);
+        $dataProduk = mysqli_fetch_assoc($resCek);
+        mysqli_stmt_close($stmtCek);
+
+        if (!$dataProduk || $dataProduk['sisa_stok'] < $kuantitas) {
+            throw new Exception("Stok tidak mencukupi");
+        }
+        // -----------------------------------------------------
+
         $query = "INSERT INTO penjualan_detail (id_penjualan, id_produk, kuantitas, subtotal) VALUES (?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, "iiii", $id_penjualan, $id_produk, $kuantitas, $subtotal);

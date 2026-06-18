@@ -826,10 +826,19 @@ $status = $_GET['status'] ?? '';
             const id_produk = select.value;
             const nama = selectedOption.dataset.nama;
             const harga = parseInt(selectedOption.dataset.harga);
+            
+            // 1. Ambil data stok maksimal dari element option
+            const stokMaksimal = parseInt(selectedOption.dataset.stok) || 0; 
             const qty = parseInt(document.getElementById('qty_produk').value);
 
             if (!id_produk || !qty || qty < 1) {
                 alert('Pilih produk dan masukkan kuantitas yang valid!');
+                return;
+            }
+
+            // 2. Validasi input vs sisa stok
+            if (qty > stokMaksimal) {
+                alert(`❌ Stok tidak mencukupi! Sisa stok untuk ${nama} hanya ${stokMaksimal}.`);
                 return;
             }
 

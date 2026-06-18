@@ -242,14 +242,13 @@ while ($row = mysqli_fetch_assoc($resAlert)) {
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <button onclick="window.print()" class="bg-white border border-slate-200 text-slate-600 px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 hover:scale-105 transition-all flex items-center gap-2 shadow-sm">
+                    <a href="cetak_laporan.php" class="bg-white border border-slate-200 text-slate-600 px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 hover:scale-105 transition-all flex items-center gap-2 shadow-sm">
                         <i class="fa-solid fa-file-pdf text-rose-500"></i> Cetak Laporan
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- 3 CARD UTAMA (DATA DINAMIS) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm group hover:border-indigo-100 transition-all">
                 <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Total Omzet</p>
