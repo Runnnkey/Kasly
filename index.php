@@ -126,10 +126,6 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex items-center justify-center">
-                <p class="text-slate-400 font-medium">Area Grafik</p>
-            </div>
-
         </div>
     </header>
 
