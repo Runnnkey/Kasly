@@ -234,12 +234,6 @@ if (isset($_POST['btn_update_umkm'])) {
                             </button>
                         <?php endif; ?>
 
-                        <?php if ($rowUser['role'] !== 'Kasir'): ?>
-                            <button id="btnPreferensi" class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
-                                <i class="fa-solid fa-sliders w-5"></i> Preferensi Aplikasi
-                            </button>
-                        <?php endif; ?>
-
                         <button id="btnKeamanan" class="w-full text-left px-5 py-4 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm flex items-center gap-3 transition">
                             <i class="fa-solid fa-user-shield w-5"></i> Keamanan & Data
                         </button>
@@ -390,45 +384,6 @@ if (isset($_POST['btn_update_umkm'])) {
                                     </div>
                                 </div>
                             <?php endif; ?>
-
-                            <?php if ($rowUser['role'] !== 'Kasir'): ?>
-                                <div id="kontenPreferensi" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm w-full">
-                                    <div class="p-6 border-b border-slate-100 bg-slate-50/50">
-                                        <h3 class="font-bold text-slate-800">Preferensi Aplikasi</h3>
-                                    </div>
-                                    <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <p class="font-bold text-slate-700 text-sm">Mata Uang</p>
-                                                <p class="text-xs text-slate-400">Format angka yang digunakan.</p>
-                                            </div>
-                                            <select class="p-2 bg-slate-100 border-none rounded-lg text-xs font-bold outline-none cursor-pointer">
-                                                <option>Rupiah (IDR)</option>
-                                                <option>Dollar (USD)</option>
-                                            </select>
-                                        </div>
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <p class="font-bold text-slate-700 text-sm">Mode Gelap</p>
-                                                <p class="text-xs text-slate-400">Ubah tampilan jadi lebih gelap.</p>
-                                            </div>
-                                            <div class="w-12 h-6 bg-slate-200 rounded-full relative cursor-pointer shadow-inner">
-                                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-all"></div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center justify-between md:col-span-2 border-t pt-6 border-slate-100">
-                                            <div>
-                                                <p class="font-bold text-slate-700 text-sm">Notifikasi Peringatan Stok</p>
-                                                <p class="text-xs text-slate-400">Ingatkan jika stok produk di bawah 5.</p>
-                                            </div>
-                                            <div class="w-12 h-6 bg-indigo-600 rounded-full relative cursor-pointer">
-                                                <div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-all"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-
 
                                 <!-- 4. KEAMANAN DATA -->
                                 <div id="kontenKeamanan" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
