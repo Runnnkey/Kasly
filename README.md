@@ -24,7 +24,7 @@ Mengembangkan sistem backend, serta integrasi database
 
 ###  Website Features & Menu (Sitemap)
 
-![alt text](<UML Kasly-SIteMap.jpg>)
+![alt text](sitemap.png)
 
 
 ## Tech Stack
@@ -33,6 +33,7 @@ Mengembangkan sistem backend, serta integrasi database
 * Frontend       : HTML5, JavaScript Vanilla
 * Styling        : Tailwind CSS v4, Font Awesome 6
 * Database       : MySQL
+* Library        : DomPDF
 * Build Tool     : Tailwind CLI (`npm run build` / `npm run dev`)
 * Font           : Plus Jakarta Sans (Google Fonts)
 * Package Manager: npm
@@ -132,3 +133,26 @@ total_utang
 sisa_utang
 status
 
+9. Table pelanggan
+id_pelanggan (Primary Key)
+nama_pelanggan 
+
+10. Table pembayaran_utang
+id_pembayaran_utang (Primary Key)
+id_utang (Foreign Key)
+tanggal_pembayaran
+jumlah_bayar
+metode_pembayaran
+keterangan
+
+11. supplier
+id_supplie (Primary Key)
+nama_supplier
+kontak
+
+12. stok_masuk
+id_enrty (Primary Key)
+id_produk (Foreign Key)
+jumlah_masuk
+tanggal_masuk
+tanggal_kadaluarsa

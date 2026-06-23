@@ -76,7 +76,7 @@ $html = '
         </div>
     </div>
 
-    <h4>🏆 5 Produk Terlaris</h4>
+    <h4> 5 Produk Terlaris</h4>
     <table>
         <thead>
             <tr>
