@@ -5,13 +5,13 @@ Kasly adalah aplikasi berbasis web sebagai pencatatan dan memonitoring keuangan 
 piutang dan pelaporan laba rugi.
 
 ## Team, roles/responsibilities of each member
-* __Kamrun Syah Syahidu__ | __F1D02410011__ | Frontend Developer |   
+* __Kamrun Syah Syahidu__ | __F1D02410011__ | FullStack Developer |   
 Membuat tampilan antarmuka website dan mengembangkan halaman user
 
-* __Nisa Aulia Kirani__   | __F1D02410131__ | System Analyst & Frontend Developer |
+* __Nisa Aulia Kirani__   | __F1D02410131__ | System Analyst & FullStack Developer |
 Melakukan analisis kebutuhan sistem serta membantu pengembangan tampilan frontend
 
-* __Oktora Rizka Arifin__ | __F1D02410145__ | Backend Developer & Database |
+* __Oktora Rizka Arifin__ | __F1D02410145__ | FullStack Developer & Database |
 Mengembangkan sistem backend, serta integrasi database                       
 
 ## Users / Actors
