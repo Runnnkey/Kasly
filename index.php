@@ -74,27 +74,53 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
         </nav>
 
         <ul class="p-4 space-y-3">
+                <!-- Dashboard -->
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="index.php" class="block p-3 w-full h-full">Dashboard</a>
             </li>
+
+            <!-- Transaksi -->
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="transaksi.php" class="block p-3 w-full h-full">Transaksi</a>
             </li>
+
+            <!-- Produk -->
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="produk.php" class="block p-3 w-full h-full">Produk</a>
             </li>
+
+            <!-- Utang & Piutang (Kasir tidak bisa akses) -->
             <?php if ($row['role'] !== 'Kasir'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="utangPiutang.php" class="block p-3 w-full h-full">Utang & Piutang</a>
             </li>
+            <?php endif; ?>
+
+            <!-- Laporan (Kasir tidak bisa akses) -->
+            <?php if ($row['role'] !== 'Kasir' && $row['role'] !== 'Admin'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
             </li>
             <?php endif; ?>
+
+            <!-- MANAJEMEN USER - HANYA UNTUK OWNER -->
+            <?php if ($row['role'] == 'Owner'): ?>
+            <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
+                <a href="manage_user.php" class="block p-3 w-full h-full flex items-center gap-2">
+                    Manajemen User
+                </a>
+            </li>
+            <?php endif; ?>
+
+            <!-- Pengaturan -->
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="pengaturan.php" class="block p-3 w-full h-full">Pengaturan</a>
             </li>
-            
+
+            <!-- Garis pemisah (opsional) -->
+            <hr class="border-slate-100 my-2">
+
+            <!-- Keluar -->
             <li class="hover:bg-red-50 text-red-600 rounded-lg cursor-pointer transition-colors">
                 <a href="logout.php" class="block p-3 w-full h-full flex items-center gap-2">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -115,14 +141,6 @@ $inisial = strtoupper(substr($row['nama_lengkap'], 0, 1));
                     <p class="text-indigo-100 text-sm md:text-base">
                         Semangat buat hari ini! Cek ringkasan bisnismu di bawah ini.
                     </p>
-                    <div class="mt-6 flex gap-3">
-                        <button class="bg-white text-indigo-600 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-50 transition">
-                            <i class="fa-solid fa-plus"></i> Transaksi
-                        </button>
-                        <button class="bg-indigo-500 text-white border border-indigo-400 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-400 transition">
-                            Laporan
-                        </button>
-                    </div>
                 </div>
             </div>
 
