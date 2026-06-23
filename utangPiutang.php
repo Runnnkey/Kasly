@@ -264,7 +264,7 @@ $status = $_GET['status'] ?? '';
             </li>
             <?php endif; ?>
 
-            <!-- 👥 MANAJEMEN USER - HANYA UNTUK OWNER -->
+            <!--  MANAJEMEN USER - HANYA UNTUK OWNER -->
             <?php if ($row['role'] == 'Owner'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="manage_user.php" class="block p-3 w-full h-full flex items-center gap-2">

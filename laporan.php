@@ -220,8 +220,7 @@ while ($row = mysqli_fetch_assoc($resAlert)) {
             </li>
             <?php endif; ?>
 
-            <!-- Laporan (Kasir tidak bisa akses) -->
-            <?php if ($row['role'] !== 'Kasir' && $row['role'] !== 'Admin'): ?>
+            <?php if ($rowUser['role'] !== 'Kasir' && $rowUser['role'] !== 'Admin'): ?>
             <li class="hover:bg-slate-100 rounded-lg cursor-pointer">
                 <a href="laporan.php" class="block p-3 w-full h-full">Laporan</a>
             </li>
