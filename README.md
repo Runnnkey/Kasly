@@ -156,3 +156,63 @@ id_produk (Foreign Key)
 jumlah_masuk
 tanggal_masuk
 tanggal_kadaluarsa
+```
+## Bug Log
+### 1. Semua user dapat mengakses semua halaman
+
+Gejala : halaman pada web tidak dibatasi hingga semua user dapat mengakses halaman yang tidak sesuai dengan rolenya.
+Langkah reproduksi: 
+  a. buka website kasly
+  b. klik menu navbar
+  c. semua menu halaman terlihat
+
+Hipotesis penyebab: tidak adanya pengkondisian pada role user yang sedang login (session)
+
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+fix : Menaruh pengkondisian pada sidebar sehingga user dapat mengakses halaman sesuai dengan role nya. 
+
+![alt text](image-3.png)
+![alt text](image-4.png)
+
+### 2. user tidak dapat login 
+
+Gejala : Terjadi ketidakkonsistenan pada nama variabel sehingga user tidak dapat melakukan login
+
+Langkah reproduksi: 
+  a. Buka website kasly
+  b. Login
+  c. Muncul error This page isn’t working
+
+Hipotesis penyebab: nama variabel yang tidak konsisten pada session membuat user tidak dapat melakukan login walau username dan password yang dimasukkan sudah benar.
+
+![alt text](image-5.png)
+![alt text](image-6.png)
+
+fix : Membuat variabel menjadi konsisten sehingga sistem dapat mengetahui session yang ada.
+
+![alt text](image-7.png)
+
+## AI Usage Statement
+### Tool : Gemini/ChatGpt
+### Untuk : 
+* Memahami penulisan kode frontend menggunakan framework tailwind
+* Mempelajari cara menampilkan data pada tabel dari backend (database) ke halaman frontend.
+* Debugging error backend dan frontend seperti tampilan tidak responsif, kesalahan perhitungan data, dan grafik yang tidak sesuai.
+* Memahami cara kerja dari utang dan piutang pada sistem informasi keuangan.
+* Memahami penulisan query sql untuk menghitung utang dan piutang pada sistem.
+* Mempelajari struktur dan alur kode dari backend selama proses pengembangan.
+### Prompt Utama :
+* Bagaimana membuat halaman pencatatan keuangan yang responsif menggunakan Tailwind CSS?
+* Bagaimana cara menggabungkan data pada 2 tabel untuk menampilkan Total kas?
+* Bagaimana implementasi dari utang dan piutang pada sistem informasi keuangan dan pencatatannya pada laporan rincian utang dan piutang?
+
+## Screenshoots Webiste :
+
+![alt text](ss1.png)
+![alt text](ss2.png)
+![alt text](ss3.png)
+![alt text](ss4.png)
+![alt text](ss5.png)
+
